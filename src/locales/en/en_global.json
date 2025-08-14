@@ -116,5 +116,9 @@
   "chart": {
     "empty": "No data to show"
   },
+  "common": {
+    "loading": "Processing...",
+    "confirm": "Confirm"
+  },
   "cancel": "Cancel"
 }

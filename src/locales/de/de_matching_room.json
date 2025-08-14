@@ -6,6 +6,8 @@
   "no_more_description": "Du hast das Ende erreicht! Es gibt keine weiteren Profile zum Anschauen.",
   "book_now": "Jetzt buchen",
   "already_booked": "Bereits gebucht",
+  "cancel_title": "Event stornieren?",
+  "cancel_copy": "Bist Du sicher, dass Du das Event stornieren möchtest? Dein Gutschein wird Dir per E‑Mail zugeschickt.",
   "undo": {
     "form": {
       "title": "Das kostet 20 Herzen. Möchtest Du Deine Aktion rückgängig machen?",
@@ -28,5 +30,6 @@
     "yes": "Ja",
     "no": "Nein",
     "tag": "Superlike-Anfrage"
+    
   }
 }
