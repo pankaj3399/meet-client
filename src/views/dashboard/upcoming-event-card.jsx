@@ -3,9 +3,11 @@ import { Button } from 'components/shadcn/button';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { cn } from 'utils/cn';
+ 
 
 const UpcomingEventCard = ({ event, onClick, isOnboarding }) => {
   const { t } = useTranslation();
+ 
   function formatDateString(d){
     const formatter = new Intl.DateTimeFormat('de-DE', {
       timeZone: 'Europe/Berlin',
@@ -70,7 +72,7 @@ const UpcomingEventCard = ({ event, onClick, isOnboarding }) => {
             </div>
             <motion.div whileTap={{ scale: event.is_registered ? 1 : 0.95 }}>
               <Button
-                variant="secondary"
+                variant={event.is_registered ? 'secondary' : 'secondary'}
                 onClick={(e) => {
                   e.stopPropagation();
                   if (!event.is_registered) onClick();

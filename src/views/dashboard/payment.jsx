@@ -31,6 +31,7 @@ export function Payment(props){
   const [loading, setLoading] = useState(false);
   const [redeemed, setRedeemed] = useState(false);
   const [couponData, setCouponData] = useState(null)
+  const [pricePreview, setPricePreview] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [clicked, setClicked] = useState(false);
 
@@ -57,16 +58,10 @@ export function Payment(props){
   const buttonClick = async () => {
     setLoading(true);
     try {
-      let res = await Axios({
-  
-        method: 'POST',
-        url: '/api/account/coupon',
-        data: {
-          coupon
-        }
-  
-      });
-      setCouponData(res.data.plan?.coupon?.coupon)
+      // Validate coupon for this event transaction
+      const res = await Axios.post(`/api/event/${id}/validate-coupon`, { code: coupon, transaction: id });
+      setCouponData(res.data.data?.coupon);
+      setPricePreview(res.data.data?.price);
       setModal({
         title: props.t('auth.signup.payment.coupon.success.title'),
         subtitle: props.t('auth.signup.payment.coupon.success.subtitle'),
@@ -107,7 +102,10 @@ export function Payment(props){
               <h3 className="text-lg lg:text-xxl font-semibold text-gray-600">{props.t('account.payment.transaction.title')}</h3>
               <h3 className="text-xl lg:text-2xl font-bold mb-6 lg:mb-8">{props.t('account.payment.transaction.description_event', {
                 event: fetch?.data?.event_id?.city?.name
-              })}  {props.t('account.payment.transaction.for')} <span className="text-pink-500">€ {fetch.data?.amount}</span></h3>
+              })}  {props.t('account.payment.transaction.for')} <span className="text-pink-500">€ {pricePreview?.final || fetch.data?.amount}</span></h3>
+              {pricePreview && (
+                <p className="text-sm text-gray-600">{props.t('auth.signup.payment.coupon.applied', { defaultValue: 'Coupon applied.' })} {props.t('auth.signup.payment.coupon.original', { defaultValue: 'Original:' })} € {pricePreview.original} • {props.t('auth.signup.payment.coupon.discount', { defaultValue: 'Discount:' })} € {pricePreview.discount}</p>
+              )}
 
               <h3 className="text-lg lg:text-xl font-bold pb-4">{props.t('auth.signup.payment.coupon.title')}</h3>
               <p className="text-sm text-gray-500 font-medium">{props.t('auth.signup.payment.coupon.description')}</p>
@@ -120,7 +118,7 @@ export function Payment(props){
                   disabled={redeemed}
                   readOnly={redeemed}
                 />
-                <button className="bg-black text-white px-4 py-2 rounded-r-md" onClick={(e) => {
+                 <button className="bg-black text-white px-4 py-2 rounded-r-md" onClick={(e) => {
                   e.preventDefault();
                   !loading && (redeemed ? setRedeemed(false) : buttonClick())
                 }}>

@@ -17,6 +17,7 @@
     "title": "Nutzer"
   },
   "welcome_back": "Willkommen zurück",
+  "hey": "Hey",
   "fields": {
     "user": {
       "first_name": "Vorname",
@@ -137,5 +138,12 @@
   "age_group": "Altersgruppe",
   "with": "Mit",
   "registered_alone": "Du hast dich allein angemeldet",
-  "view_details": "Details ansehen"
+  "view_details": "Details ansehen",
+  "days_until_event": "Tage bis zum Event",
+  "your_balance": "Dein Guthaben",
+  "balance_helper": "Löse deine Herzen gegen wertvolle Vorteile ein.",
+  "topup_now": "Jetzt aufladen",
+  "more_events_head": "Weitere Events,",
+  "more_events_sub": "die du dir nicht entgehen lassen solltest",
+  "book_participation": "Teilnahme buchen"
 }

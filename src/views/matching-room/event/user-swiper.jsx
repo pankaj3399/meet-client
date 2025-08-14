@@ -262,10 +262,10 @@ const Advanced = () => {
   }
 
   return (
-    <div className="w-full lg:min-h-[90vh] flex flex-col items-center justify-center">
+    <div className="w-full lg:min-h-[70vh] flex flex-col items-center justify-center">
       {
         (canSwipe && mergedUsers?.length > 0) &&
-        <div className="relative w-[90%] lg:w-[350px] h-[50vh] lg:h-[70vh]">
+        <div className="relative w-[240px] lg:w-[340px] h-[380px] lg:h-[520px]">
           {mergedUsers?.map((user, index) => (
             <TinderCard
               ref={(el) => (childRefs.current[index] = el)}
@@ -297,7 +297,7 @@ const Advanced = () => {
 
                 {/* Gradient overlay for text */}
                 <div className="relative z-10 p-4 bg-gradient-to-t from-black/70 to-transparent text-white">
-                  <h2 className="text-2xl font-extrabold tracking-wide">
+                  <h2 className="text-xl font-extrabold tracking-wide">
                     {user.first_name}, {user.age} ({user.gender})
                   </h2>
                   <p className="text-sm italic opacity-90">{user.description}</p>

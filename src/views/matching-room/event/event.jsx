@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import UserSwiper from './user-swiper'
-import { UserSwiperContext, useTranslation } from 'components/lib'
+import { UserSwiperContext, useTranslation, useParams, useAPI, Icon } from 'components/lib'
 
 function Event() {
     const userSwiperContext = useContext(UserSwiperContext)
@@ -15,67 +15,33 @@ function Event() {
         setSelectedImage(null)
     }
     
+    const { id } = useParams();
+    const event = useAPI(`/api/events/${id}`);
+
+    function formatDateString(d){
+        try{
+            return new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(d));
+        }catch{ return ''; }
+    }
+
     return <div>
-        <div className="flex gap-8 lg:gap-4 w-full flex-col lg:flex-row pb-[100px] lg:pb-0">
-            <div className="flex-[60%]">
-                <h1 className="text-2xl font-bold text-center my-6">Bar-Hopping Events</h1>
-                <UserSwiper />
-            </div>
-            {userSwiperContext?.activeUser && (
-                <div className="lg:block lg:w-[300px] p-6 bg-white shadow-lg border-0 rounded-3xl max-w-5xl mx-auto">
-                    <div className="space-y-6">
-                        {/* About Me Section */}
-                        <div className="mt-8">
-                        <h3 className="text-2xl font-semibold text-gray-800">{t('account.profile.profile.form.description.label')}</h3>
-                        <p className="text-gray-600 mt-2">{userSwiperContext?.activeUser?.description}</p>
-                        </div>
+        <div className="w-full flex flex-col items-center pb-[60px]">
+            <h1 className="text-3xl font-semibold text-center my-6">
+                {t('matching_room.all_participants', { defaultValue: 'Alle Teilnehmer aus' })} {" "}
+                <span className="text-pink-600">{event?.data?.city?.name}</span> {" "}
+                {t('matching_room.from', { defaultValue: 'vom' })} {" "}
+                <span className="text-pink-600">{formatDateString(event?.data?.date)}</span>
+            </h1>
 
-                        {/* Interests Section */}
-                        {userSwiperContext?.activeUser?.interests?.length > 0 && (
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-800 mb-2">{t('account.profile.profile.form.interests.label')}</h4>
-                            <div className="flex flex-wrap gap-2">
-                            {userSwiperContext?.activeUser?.interests.map((interest, index) => (
-                                <span
-                                key={index}
-                                className="text-pink-600 border-pink-300 bg-pink-50 border rounded-full px-4 py-1 text-sm"
-                                >
-                                {interest}
-                                </span>
-                            ))}
-                            </div>
-                        </div>
-                        )}
+            <div className="relative w-full max-w-5xl rounded-3xl bg-white border border-slate-200 p-4 lg:p-8 flex justify-center items-center overflow-hidden">
+                {/* faint background icons */}
+                <Icon name="x" size={280} className="absolute left-12 top-1/2 -translate-y-1/2 text-slate-300 opacity-20" />
+                <Icon name="heart" size={320} className="absolute right-6 bottom-6 text-slate-300 opacity-20" />
 
-                        {/* Looking For Section */}
-                        {userSwiperContext?.activeUser?.looking_for?.length > 0 && (
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-800 mb-2">{t('account.profile.profile.form.looking_for.label')}</h4>
-                            <p className="text-gray-700">{typeof userSwiperContext?.activeUser?.looking_for === 'string' ? userSwiperContext?.activeUser?.looking_for : userSwiperContext?.activeUser?.looking_for.join(", ")}</p>
-                        </div>
-                        )}
-
-                        {/* Gallery Section */}
-                        {userSwiperContext?.activeUser?.images.length > 1 && (
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-800 mb-2">{t('account.profile.gallery')}</h4>
-                            <div className="grid grid-cols-2 sm:grid-cols-2 gap-3">
-                            {userSwiperContext?.activeUser?.images.slice(1).map((photo, index) => (
-                                <div key={index} className="relative">
-                                    <img
-                                        src={photo}
-                                        onClick={() => handleImageClick(photo)}
-                                        alt={`Gallery ${index}`}
-                                        className="rounded-xl object-cover h-40 w-full cursor-pointer hover:scale-105 transition-transform duration-300 shadow-md"
-                                    />
-                                </div>
-                            ))}
-                            </div>
-                        </div>
-                        )}
-                    </div>
+                <div className="relative z-10">
+                    <UserSwiper />
                 </div>
-            )}
+            </div>
         </div>
         {/* Modal for enlarged image */}
         {selectedImage && (

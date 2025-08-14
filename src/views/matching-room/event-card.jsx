@@ -3,8 +3,13 @@ import { Button } from 'components/shadcn/button';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 
+import axios from 'axios';
+import { Dialog, DialogContent } from 'components/shadcn/dialog';
+import { useState } from 'react';
 const EventCard = ({ event, onClick }) => {
   const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   function formatDateString(d){
     const formatter = new Intl.DateTimeFormat('de-DE', {
     timeZone: 'Europe/Berlin',
@@ -31,6 +36,21 @@ const EventCard = ({ event, onClick }) => {
   }
 
   const isOpen = event?.date && isOpenEvent(event.date);
+
+  const handleCancel = async (e) => {
+    e.stopPropagation();
+    if (!event?._id) return;
+    try {
+      setLoading(true);
+      await axios.post(`/api/events/${event._id}/cancel`);
+      setOpen(false);
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <motion.div
@@ -82,18 +102,47 @@ const EventCard = ({ event, onClick }) => {
               
             </div>
             <motion.div whileTap={{ scale: 0.95 }}>
-              {isOpen && (
+              <div className="flex gap-2">
+                {isOpen && (
+                  <Button
+                    variant="secondary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClick();
+                    }}
+                    className="text-sm font-semibold px-4 py-1 bg-pink-600 hover:bg-pink-700 text-white transition-colors duration-300"
+                  >
+                    {t('matching_room.join_now')}
+                  </Button>
+                )}
+
                 <Button
-                  variant="secondary"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClick();
-                  }}
-                  className="text-sm font-semibold px-4 py-1 bg-pink-600 hover:bg-pink-700 text-white transition-colors duration-300"
+                  variant="outline"
+                  onClick={(e) => { e.stopPropagation(); setOpen(true); }}
+                  className="text-sm font-semibold px-4 py-1 border-red-600 text-red-600 hover:bg-red-50"
                 >
-                  {t('matching_room.join_now')}
+                  {t('dashboard.cancel')}
                 </Button>
-            )}
+
+                <Dialog open={open} onOpenChange={setOpen}>
+                  <DialogContent className="sm:max-w-md bg-white">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold">{t('matching_room.cancel_title', { defaultValue: 'Cancel Event?' })}</h3>
+                      <p className="text-sm text-gray-600">
+                        {t('matching_room.cancel_copy', { defaultValue: "Are you sure you want to cancel the event? You'll receive a voucher for a future event." })}
+                      </p>
+                      <div className="flex justify-end gap-2 pt-2">
+                        <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>
+                          {t('dashboard.cancel')}
+                        </Button>
+                        <Button className="bg-red-600 hover:bg-red-700 text-white" onClick={handleCancel} disabled={loading}>
+                          {loading ? t('common.loading', { defaultValue: 'Processing...' }) : t('common.confirm', { defaultValue: 'Confirm' })}
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </motion.div>
           </div>
         </motion.div>

@@ -1,11 +1,14 @@
 {
     "title": "Matching Room",
     "header": "Upcoming Bar-Hopping Events",
+  "dont_miss": "don't miss these events!",
     "join_now": "Join Now",
     "no_more_user": "No more users to swipe",
     "no_more_description": "You've reached the end! There are no more profiles to view.",
     "book_now": "Book Now",
     "already_booked": "Already Booked",
+  "cancel_title": "Cancel Event?",
+  "cancel_copy": "Are you sure you want to cancel the event? You'll receive a voucher for a future event.",
     "undo": {
         "form": {
             "title": "This will cost 20 hearts. Do you want to undo your action?",
@@ -28,5 +31,7 @@
         "yes": "Yes",
         "no": "No",
         "tag": "Superlike Request"
-    }
+    },
+  "all_participants": "All participants from",
+  "from": "from"
 }

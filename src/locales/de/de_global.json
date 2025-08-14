@@ -116,5 +116,9 @@
   "chart": {
     "empty": "Keine Daten vorhanden"
   },
+  "common": {
+    "loading": "Wird verarbeitet...",
+    "confirm": "Bestätigen"
+  },
   "cancel": "Abbrechen"
 }
