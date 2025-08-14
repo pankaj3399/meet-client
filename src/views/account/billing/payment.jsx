@@ -95,44 +95,33 @@ export function Payment(props){
   
   return (
     <Animate type='pop'>
-      <Card restrictWidth className={cn(props.className, "p-4 lg:p-10 !max-w-full bg-background")}>
-        <div className='flex flex-col w-full items-start md:h-[100vh] md:max-h-[100vh] overflow-auto max-w-[600px]'>
+      <Card restrictWidth className={cn(props.className, "p-4 lg:p-10 !max-w-full bg-background")}> 
+        <div className='flex flex-col w-full items-start max-w-[880px]'>
 
-          <section className='mt-8 md:mt-0 w-full md:h-[100vh] md:max-h-[100vh] overflow-auto'>
+          <section className='mt-2 w-full'>
+            <h1 className="text-3xl font-semibold mb-3">Hey <span className='text-pink-600'>{context?.user?.name}</span>, führe deine Zahlung durch</h1>
 
-            {/* Coupon Code Section */}
-            <div className="mt-6 p-8 bg-white rounded-lg">
-              <h3 className="text-lg lg:text-xxl font-semibold text-gray-600">{props.t('account.payment.transaction.title')}</h3>
-              <h3 className="text-xl lg:text-2xl font-bold">{props.t('account.payment.transaction.description')} <span className="text-pink-500">{fetch.data?.quantity}</span> {props.t('account.payment.transaction.for')} <span className="text-pink-500">€ {fetch.data?.amount}</span></h3>
-              <div className="mt-2 flex">
-                {/* <input
-                  type="text"
-                  className="flex-1 border px-4 py-2 rounded-l-md rounded-r-none"
-                  placeholder={props.t('account.payment.coupon.placeholder')}
-                  onChange={(e) => (setCoupon(e.target.value), setCouponData(null))}
-                  disabled={redeemed}
-                  readOnly={redeemed}
-                />
-                <button className="bg-black text-white px-4 py-2 rounded-r-md" onClick={(e) => {
-                  e.preventDefault();
-                  !loading && (redeemed ? setRedeemed(false) : buttonClick())
-                }}>
-                  {redeemed ? props.t('account.payment.coupon.change_code') : props.t('account.payment.coupon.redeem')}
-                </button> */}
+            {/* main card */}
+            <div className="mt-4 bg-white rounded-2xl border border-slate-200 p-6 lg:p-10 shadow-sm relative">
+              {/* step pill */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-pink-500 text-white text-xs font-semibold px-4 py-1 rounded-full shadow">Letzter Schritt</div>
+
+              {/* transaction summary */}
+              <div className="mb-6">
+                <h3 className="text-sm font-semibold text-gray-600">{props.t('account.payment.transaction.title')}</h3>
+                <h3 className="text-lg lg:text-xl font-bold">{props.t('account.payment.transaction.description')} <span className="text-pink-500">{fetch.data?.quantity}</span> {props.t('account.payment.transaction.for')} <span className="text-pink-500">€ {fetch.data?.amount}</span></h3>
               </div>
-            </div>
 
-            <div className="mt-6 p-8 bg-white rounded-lg">
-            {/* Payment Method Tabs */}
+              {/* tabs */}
               <div className="w-full flex justify-center items-center">
-                <div className="flex my-4 space-x-2 bg-gray-100 p-1 rounded-lg w-fit ">
-                  <button className={`px-4 py-2 text-sm font-semibold ${!directDebit && 'bg-white shadow !font-bold font-grostek-bold'} rounded-md`} onClick={() => setDirectDebit(false)}>{props.t('account.payment.payment.method.credit_card')}</button>
-                  <button className={`px-4 py-2 text-sm font-semibold ${directDebit && 'bg-white shadow !font-bold font-grostek-bold'} rounded-md `} onClick={() => setDirectDebit(true)}>{props.t('account.payment.payment.method.sepa')}</button>
+                <div className="flex my-2 space-x-2 bg-gray-100 p-1 rounded-full">
+                  <button className={`px-4 py-2 text-xs font-semibold rounded-full ${!directDebit ? 'bg-white shadow' : 'text-gray-600'}`} onClick={() => setDirectDebit(false)}>{props.t('account.payment.payment.method.credit_card')}</button>
+                  <button className={`px-4 py-2 text-xs font-semibold rounded-full ${directDebit ? 'bg-white shadow' : 'text-gray-600'}`} onClick={() => setDirectDebit(true)}>{props.t('account.payment.payment.method.sepa')}</button>
                 </div>
               </div>
 
-            {/* Payment Form */}
-            <PaymentForm
+              {/* form */}
+              <PaymentForm
               inputs={{
                 ...!directDebit && { credit_card_name: {
                   label: props.t('account.billing.card.form.name_on_card'),
@@ -197,20 +186,20 @@ export function Payment(props){
               customBtnTrigger={customBtnClick}
             />
 
-          </div>
-
-            {/* Pay Button */}
-            <button className={`mt-6 mb-28 w-full bg-black text-white py-3 rounded-md text-lg font-semibold flex items-center justify-center space-x-2 ${clicked && 'opacity-50'}`} onClick={(e) => {
+              {/* actions row */}
+              <div className="mt-6 flex items-center justify-between">
+                <button className={`bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-full text-sm font-semibold ${clicked && 'opacity-50'}`} onClick={(e) => {
               e.preventDefault();
               if(!clicked){
                 setCustomBtnClick(prev => prev + 1);
                 setClicked(true);
               }
-            }}
-            disabled={clicked}
-            >
-              <span>{props.t('account.payment.checkout.pay_now')}</span> <span>→</span>
-            </button>
+                }} disabled={clicked}>
+                  {props.t('account.payment.checkout.pay_now')}
+                </button>
+                <div className="text-[11px] text-gray-500">Gutschein-Code vorhanden?</div>
+              </div>
+            </div>
           </section>
         </div>
         {

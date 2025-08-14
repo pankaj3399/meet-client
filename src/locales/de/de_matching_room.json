@@ -1,6 +1,7 @@
 {
   "title": "Matching-Raum",
   "header": "Bevorstehende Bar-Hopping-Events",
+  "dont_miss": "verpasse diese Events nicht!",
   "join_now": "Jetzt beitreten",
   "no_more_user": "Keine weiteren Nutzer zum Swipen",
   "no_more_description": "Du hast das Ende erreicht! Es gibt keine weiteren Profile zum Anschauen.",
@@ -32,4 +33,7 @@
     "tag": "Superlike-Anfrage"
     
   }
+  ,
+  "all_participants": "Alle Teilnehmer aus",
+  "from": "vom"
 }

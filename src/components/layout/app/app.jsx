@@ -37,7 +37,7 @@ export function AppLayout({ title, children, path }){
       <VerticalNav items={ nav }/>
       <DrawerNav items={ nav }/>
 
-      <main className='p-4 pt-20 min-h-screen sm:pl-[12rem] sm:pr-0 sm:pb-0 sm:pt-0 dark:bg-slate-900'>
+      <main className='p-4 pt-20 min-h-screen sm:pl-[14rem] sm:pr-0 sm:pb-0 sm:pt-0 dark:bg-slate-900'>
 
         {/* <Header title={ title === 'dashboard.title' ? `${t('nav.welcome')} ${authContext.user.name}` : t(title) }>
           <User />

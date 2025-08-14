@@ -6,5 +6,9 @@
     "coins": "hearts",
     "buy_now": "Buy Now",
     "edit_profile": "Edit your profile",
-    "buy_title": "Buy Hearts"
+    "buy_title": "Buy Hearts",
+    "topup_headline": "Top up balance and enjoy valuable benefits",
+    "pack_100": "top up for €7",
+    "pack_250": "top up for €14",
+    "pack_700": "top up for €28"
 }

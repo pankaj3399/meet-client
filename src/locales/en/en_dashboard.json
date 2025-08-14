@@ -17,6 +17,7 @@
       "title": "Users"
   },
   "welcome_back": "Welcome back",
+  "hey": "Hey",
   "fields": {
     "user": {
         "first_name": "First Name",
@@ -137,5 +138,12 @@
   "age_group": "Age Group",
   "with": "With",
   "registered_alone": "You registered alone",
-  "view_details": "View Details"
+  "view_details": "View Details",
+  "days_until_event": "Days until event",
+  "your_balance": "Your balance",
+  "balance_helper": "Redeem your hearts for valuable benefits.",
+  "topup_now": "Top up now",
+  "more_events_head": "More events,",
+  "more_events_sub": "you shouldn't miss",
+  "book_participation": "Book participation"
 }

@@ -1,6 +1,7 @@
 {
     "title": "Matching Room",
     "header": "Upcoming Bar-Hopping Events",
+  "dont_miss": "don't miss these events!",
     "join_now": "Join Now",
     "no_more_user": "No more users to swipe",
     "no_more_description": "You've reached the end! There are no more profiles to view.",
@@ -30,5 +31,7 @@
         "yes": "Yes",
         "no": "No",
         "tag": "Superlike Request"
-    }
+    },
+  "all_participants": "All participants from",
+  "from": "from"
 }
