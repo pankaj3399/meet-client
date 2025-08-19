@@ -244,18 +244,36 @@ const Advanced = () => {
   };
 
   const handleConfirmSuperlike = async (confirm) => {
+    const index = currentIndexRef.current;
+    const direction = confirm ? 'right' : 'left';
     try {
-      const res = await Axios({
-        method: 'POST',
-        url: `/api/matching/superlike/confirm`,
-        data: {
-          targetId: id, eventId: parts[2], confirm
+      viewContext.dialog.open({
+        title: t(`matching_room.confirm_superlike.form.title_${direction === 'right' ? 'confirm' : 'reject'}`),
+        form: {
+          inputs: {
+            eventId: {
+              type: 'hidden',
+              value: parts[2]
+            },
+            superlikeFromId: {
+              type: 'hidden',
+              value: mergedUsers?.[currentIndex]?._id
+            },
+            confirm: {
+              type: 'hidden',
+              value: direction === 'right'
+            }
+          },
+          buttonText: t(`matching_room.confirm_superlike.form.button${direction === 'right' ? '' : '_reject'}`),
+          url: '/api/matching/superlike/confirm',
+          method: 'POST'
         }
+      }, async () => {
+        setLastDirection(direction);
+        setLastSwipedUser({ user: mergedUsers?.[currentIndex], index });
+        updateCurrentIndex(index - 1);
+        await childRefs.current[index].swipe(direction);
       });
-      await childRefs.current[currentIndex].swipe('right');
-      setLastDirection('right');
-
-      setCurrentIndex(currentIndex - 1);
     } catch (error) {
       console.log(error);
     }

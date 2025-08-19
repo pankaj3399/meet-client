@@ -54,7 +54,7 @@ const EventCard = ({ event, onClick }) => {
 
   return (
     <motion.div
-      onClick={onClick}
+      onClick={() => isOpen && onClick()}
       className="relative w-full rounded-3xl overflow-hidden shadow-xl cursor-pointer h-[400px] lg:h-[600px]"
       style={{
         backgroundImage: `url(${event.image})`,
