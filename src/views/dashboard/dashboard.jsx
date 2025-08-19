@@ -245,7 +245,10 @@ export function Dashboard({ t }){
               {t('dashboard.balance_helper', 'Löse deine Herzen gegen wertvolle Vorteile ein.')}
             </div>
             <div className="mt-5">
-              <button className="w-full h-9 rounded-full bg-white text-pink-600 text-sm font-semibold hover:bg-white/90 transition-colors">
+              <button 
+                className="w-full h-9 rounded-full bg-white text-pink-600 text-sm font-semibold hover:bg-white/90 transition-colors"
+                onClick={() => navigate('/account/billing?topup=1')}
+              >
                 {t('dashboard.topup_now', 'Top up now')}
               </button>
             </div>

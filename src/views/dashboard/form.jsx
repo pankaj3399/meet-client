@@ -114,7 +114,7 @@ const DynamicBookingForm = ({
   };
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setLoading(true);
     try {
       await handleSubmit(e);
@@ -269,7 +269,7 @@ const DynamicBookingForm = ({
       <DialogFooter className="flex flex-wrap sm:flex-nowrap gap-2">
         <Button
           type="button"
-          onClick={loading ? (e) => (e.preventDefault()) : isFormValid && onSubmit}
+          onClick={loading ? (e) => (e.preventDefault()) : (e) => isFormValid && onSubmit(e)}
           className="w-full sm:w-auto bg-cyan-600 hover:bg-cyan-700 flex items-center justify-center"
           disabled={loading || !isFormValid}
         >
