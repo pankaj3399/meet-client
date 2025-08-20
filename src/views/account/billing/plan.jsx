@@ -6,7 +6,8 @@ import {
   useTranslation,
   ViewContext,
   cn,
-  useNavigate
+  useNavigate,
+  useLocation
 } from "components/lib"
 import { Button } from "components/shadcn/button"
 import {
@@ -23,7 +24,7 @@ import Axios from "axios"
  * BillingPlan + Buy‑Coins feature
  * --------------------------------
  * ├─ Current balance box (coins)
- * ├─ “Buy Coins” button opens purchase modal (Stripe / your flow)
+ * ├─ "Buy Coins" button opens purchase modal (Stripe / your flow)
  * ├─ Existing payment‑method management kept in Tabs modal
  */
 
@@ -33,6 +34,7 @@ export function BillingPlan(props) {
   const viewContext = useContext(ViewContext)
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
 
   // state
   const [isOpenPayment, setIsOpenPayment] = useState(false)
@@ -47,6 +49,14 @@ export function BillingPlan(props) {
   useEffect(() => {
     setCard(props.datas)
   }, [props.datas])
+
+  // Auto-open buy modal if topup=1 in query params
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search)
+    if (searchParams.get('topup') === '1') {
+      setIsOpenBuy(true)
+    }
+  }, [location.search])
 
   /* BUY COINS handler */
   const handleBuyCoins = async (amount) => {

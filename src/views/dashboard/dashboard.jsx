@@ -5,9 +5,12 @@
 *
 **********/
 
-import { useContext, useEffect, useMemo } from 'react';
-import { ViewContext, Card, Stat, Chart, Table, Grid, Row, Animate, Feedback, useAPI, AuthContext, Icon } from 'components/lib';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { ViewContext, Card, Stat, Chart, Table, Grid, Row, Animate, Feedback, useAPI, AuthContext, Icon, useNavigate } from 'components/lib';
 import { Button } from 'components/shadcn/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from 'components/shadcn/dialog';
+import DynamicBookingForm from './form';
+import axios from 'axios';
 
 export function Dashboard({ t }){
 
@@ -16,6 +19,68 @@ export function Dashboard({ t }){
   const authContext = useContext(AuthContext);
   const events = useAPI('/api/events');
   const upcomingPastEvents = useAPI('/api/events/dashboard');
+  const user = useAPI('/api/user');
+  const navigate = useNavigate();
+
+  // Booking modal state
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submiting, setSubmiting] = useState(false);
+
+  // Form data
+  const [mainUser, setMainUser] = useState({
+    first_name: '',
+    last_name: '',
+    date_of_birth: '',
+    gender: '',
+    email: '',
+    password: '',
+    looking_for: '',
+    relationship_goal: '',
+    children: '',
+    kind_of_person: '',
+    feel_around_new_people: '',
+    prefer_spending_time: '',
+    describe_you_better: '',
+    describe_role_in_relationship: '',
+  });
+
+  const [friend, setFriend] = useState({
+    first_name: '',
+    last_name: '',
+    date_of_birth: '',
+    gender: '',
+    email: '',
+    looking_for: '',
+    relationship_goal: '',
+    children: '',
+    kind_of_person: '',
+    feel_around_new_people: '',
+    prefer_spending_time: '',
+    describe_you_better: '',
+    describe_role_in_relationship: '',
+  });
+
+  const [addFriend, setAddFriend] = useState(false);
+
+  // Form options
+  const genders = [
+    {label: t('dashboard.genders.male'), value: 'male'}, 
+    {label: t('dashboard.genders.female'), value: 'female'}
+  ];
+  const lookingFor = [
+    { value: 'male', label: t('account.profile.profile.gender.male') },
+    { value: 'female', label: t('account.profile.profile.gender.female') },
+    { value: 'both', label: t('account.profile.profile.gender.both') }
+  ];
+  const relationshipGoals = [
+    { value: 'relationship', label: t('account.profile.profile.relationship_goal.relationship') },
+    { value: 'friendship', label: t('account.profile.profile.relationship_goal.friendship') }
+  ];
+  const hasChildren = [
+    { value: 'Yes', label: t('account.profile.profile.children.yes') },
+    { value: 'No', label: t('account.profile.profile.children.no') }
+  ];
 
   // show welcome message
   useEffect(() => {
@@ -63,6 +128,79 @@ export function Dashboard({ t }){
     try { return new Intl.DateTimeFormat('de-DE', { day: '2-digit' }).format(new Date(d)); } catch { return ''; }
   }
 
+  // Modal handlers
+  const openModal = (event) => {
+    setSelectedEvent(event);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = (e) => {
+    e?.preventDefault();
+    setIsModalOpen(false);
+    setSelectedEvent(null);
+    setFriend({ first_name: '', last_name: '', date_of_birth: '', gender: '', email: '', looking_for: '',
+    relationship_goal: '',
+    children: '',
+    kind_of_person: '',
+    feel_around_new_people: '',
+    prefer_spending_time: '',
+    describe_you_better: '',
+    describe_role_in_relationship: '', });
+    setAddFriend(false);
+  };
+
+  const handleSubmit = async () => {
+    setSubmiting(true);
+    try {
+      const { data: submitted } = await axios.post("/api/events/register", {
+        mainUser,
+        friend,
+        id: selectedEvent._id
+      });
+
+      if (submitted) {
+        navigate(`/event/${submitted.data.id}`);
+      }
+    } catch (err) {
+      console.log(err);
+      if (err.response?.data?.error) {
+        viewContext.notification({
+          description: err.response.data.error,
+          variant: 'error'
+        });
+      } else {
+        viewContext.handleError(err);
+      }
+    } finally {
+      setSubmiting(false);
+    }
+  };
+
+  // Populate user data
+  useEffect(() => {
+    function init() {
+      setMainUser({
+        first_name: user?.data?.first_name,
+        last_name: user?.data?.last_name,
+        date_of_birth: user?.data?.date_of_birth,
+        gender: user?.data?.gender,
+        email: user?.data?.email,
+        looking_for: user?.data?.looking_for,
+        relationship_goal: user?.data?.relationship_goal,
+        children: user?.data?.children ? 'Yes' : 'No',
+        kind_of_person: user?.data?.kind_of_person,
+        feel_around_new_people: user?.data?.feel_around_new_people,
+        prefer_spending_time: user?.data?.prefer_spending_time,
+        describe_you_better: user?.data?.describe_you_better,
+        describe_role_in_relationship: user?.data?.describe_role_in_relationship,
+      });
+    }
+    const timer = setTimeout(() => {
+      init();
+    }, 30);
+    return () => clearTimeout(timer);
+  }, [user]);
+
   return (
     <Animate type='pop'>
       <div className="space-y-8 p-4 lg:p-12">
@@ -107,7 +245,10 @@ export function Dashboard({ t }){
               {t('dashboard.balance_helper', 'Löse deine Herzen gegen wertvolle Vorteile ein.')}
             </div>
             <div className="mt-5">
-              <button className="w-full h-9 rounded-full bg-white text-pink-600 text-sm font-semibold hover:bg-white/90 transition-colors">
+              <button 
+                className="w-full h-9 rounded-full bg-white text-pink-600 text-sm font-semibold hover:bg-white/90 transition-colors"
+                onClick={() => navigate('/account/billing?topup=1')}
+              >
                 {t('dashboard.topup_now', 'Top up now')}
               </button>
             </div>
@@ -135,14 +276,51 @@ export function Dashboard({ t }){
                   </div>
                 </div>
 
-                <Button className="bg-slate-900 text-white hover:bg-slate-800 rounded-md px-4 py-2 text-sm">
-                  {t('dashboard.book_participation', 'Book participation')}
+                <Button 
+                  className={ev.is_registered 
+                    ? "bg-gray-400 text-white cursor-not-allowed rounded-md px-4 py-2 text-sm" 
+                    : "bg-slate-900 text-white hover:bg-slate-800 rounded-md px-4 py-2 text-sm"
+                  }
+                  onClick={() => !ev.is_registered && openModal(ev)}
+                  disabled={ev.is_registered}
+                >
+                  {ev.is_registered 
+                    ? t('matching_room.already_booked', 'Already booked') 
+                    : t('dashboard.book_participation', 'Book participation')
+                  }
                 </Button>
               </div>
             ))}
           </div>
         </section>
+
+        {/* Register Modal */}
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-3xl bg-white">
+            <DialogHeader>
+              <DialogTitle>{t('dashboard.book_event')}: {selectedEvent?.tagline}</DialogTitle>
+            </DialogHeader>
+
+            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+              <DynamicBookingForm
+                handleSubmit={handleSubmit}
+                mainUser={mainUser}
+                setMainUser={setMainUser}
+                friend={friend}
+                setFriend={setFriend}
+                addFriend={addFriend}
+                setAddFriend={setAddFriend}
+                genders={genders}
+                closeModal={closeModal}
+                lookingFor={lookingFor}
+                relationshipGoals={relationshipGoals}
+                hasChildren={hasChildren}
+              />
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </Animate>
   );
 }
+
