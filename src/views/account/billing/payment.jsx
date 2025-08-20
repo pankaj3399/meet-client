@@ -76,9 +76,9 @@ export function Payment(props){
       setLoading(false);
       setRedeemed(true)
     } catch (err) {
-      console.log(err.response?.data?.message, 'err.response?.data?.message');
-      
-      if(err.response?.data?.message === 'Invalid coupon'){
+      const serverError = err.response?.data?.error || err.response?.data?.message;
+      console.log(serverError, 'coupon error');
+      if(serverError === 'Invalid coupon'){
         setModal({
           title: props.t('account.payment.coupon.error.title'),
           subtitle: props.t('account.payment.coupon.error.subtitle'),
