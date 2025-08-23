@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'components/lib';
 import { useAPI } from 'components/lib';
 import { Button } from 'components/shadcn/button';
 import { Dialog, DialogContent } from 'components/shadcn/dialog';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function formatDateString(d){
@@ -21,15 +21,14 @@ function formatDateString(d){
 function dayNumber(d){
   try { return new Intl.DateTimeFormat('de-DE', { day: '2-digit' }).format(new Date(d)); } catch { return ''; }
 }
-
 function monthYearShort(d, locale){
   try { return new Intl.DateTimeFormat(locale || 'de-DE', { month: 'short', year: 'numeric' }).format(new Date(d)); } catch { return ''; }
 }
 
 const EventsGrid = () => {
-  const navigate = useNavigate();
   const events = useAPI('/api/events/matching');
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [cancelDialog, setCancelDialog] = useState({ open: false, event: null, loading: false });
 
   const handleCancel = async (e) => {
@@ -47,13 +46,20 @@ const EventsGrid = () => {
     }
   };
 
+  const handleCardClick = (eventId) => {
+    navigate(`/matching-room/${eventId}`);
+  };
   return (
     <>
       <section className="rounded-2xl border border-slate-200 bg-white divide-y">
         {events?.data?.map((ev, idx) => (
-          <div key={idx} className="flex items-center justify-between p-5 gap-4">
+          <div 
+            key={idx}
+            className="flex items-center justify-between p-5 gap-4 cursor-pointer hover:bg-slate-50 transition-colors"
+            onClick={() => handleCardClick(ev._id)}
+          >
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-white flex flex-col items-center justify-center shadow-md">
+              <div className="w-20 h-20rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-white flex flex-col items-center justify-center shadow-md">
                 <div className="text-3xl leading-none font-extrabold">{dayNumber(ev.date)}</div>
                 <div className="text-[10px] uppercase tracking-wide opacity-90">{monthYearShort(ev.date, i18n.language)}</div>
               </div>
@@ -103,5 +109,5 @@ const EventsGrid = () => {
     </>
   );
 };
-
 export default EventsGrid;
+

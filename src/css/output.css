@@ -627,9 +627,6 @@ table tbody tr:last-child td {
 .bottom-4 {
   bottom: 1rem;
 }
-.bottom-6 {
-  bottom: 1.5rem;
-}
 .left-0 {
   left: 0px;
 }
@@ -638,9 +635,6 @@ table tbody tr:last-child td {
 }
 .left-1\/2 {
   left: 50%;
-}
-.left-12 {
-  left: 3rem;
 }
 .left-2 {
   left: 0.5rem;
@@ -1347,6 +1341,9 @@ table tbody tr:last-child td {
 .flex-1 {
   flex: 1 1 0%;
 }
+.flex-\[60\%\] {
+  flex: 60%;
+}
 .flex-\[80\%\] {
   flex: 80%;
 }
@@ -1548,6 +1545,9 @@ table tbody tr:last-child td {
 }
 .gap-6 {
   gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
 }
 .gap-x-1 {
   column-gap: 0.25rem;
@@ -2358,8 +2358,8 @@ table tbody tr:last-child td {
 .pb-6 {
   padding-bottom: 1.5rem;
 }
-.pb-\[60px\] {
-  padding-bottom: 60px;
+.pb-\[100px\] {
+  padding-bottom: 100px;
 }
 .pl-14 {
   padding-left: 3.5rem;
@@ -2645,10 +2645,6 @@ table tbody tr:last-child td {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity, 1));
 }
-.text-slate-300 {
-  --tw-text-opacity: 1;
-  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
-}
 .text-slate-400 {
   --tw-text-opacity: 1;
   color: rgb(148 163 184 / var(--tw-text-opacity, 1));
@@ -2707,9 +2703,6 @@ table tbody tr:last-child td {
 }
 .opacity-0 {
   opacity: 0;
-}
-.opacity-20 {
-  opacity: 0.2;
 }
 .opacity-50 {
   opacity: 0.5;
@@ -4390,6 +4383,10 @@ html, #root, body {
     margin-top: 1.5rem;
   }
 
+  .lg\:block {
+    display: block;
+  }
+
   .lg\:h-52 {
     height: 13rem;
   }
@@ -4418,6 +4415,10 @@ html, #root, body {
     width: 13rem;
   }
 
+  .lg\:w-\[300px\] {
+    width: 300px;
+  }
+
   .lg\:w-\[30em\] {
     width: 30em;
   }
@@ -4442,12 +4443,20 @@ html, #root, body {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
   .lg\:flex-col {
     flex-direction: column;
   }
 
   .lg\:flex-nowrap {
     flex-wrap: nowrap;
+  }
+
+  .lg\:gap-4 {
+    gap: 1rem;
   }
 
   .lg\:gap-5 {
@@ -4466,13 +4475,13 @@ html, #root, body {
     padding: 3rem;
   }
 
-  .lg\:p-8 {
-    padding: 2rem;
-  }
-
   .lg\:py-6 {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
+  }
+
+  .lg\:pb-0 {
+    padding-bottom: 0px;
   }
 
   .lg\:pr-4 {
