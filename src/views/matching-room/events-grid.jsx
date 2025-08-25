@@ -71,7 +71,10 @@ const EventsGrid = () => {
 
             <Button
               className="bg-red-600 text-white hover:bg-red-700 rounded-full px-4 py-1 text-xs"
-              onClick={() => setCancelDialog({ open: true, event: ev, loading: false })}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCancelDialog({ open: true, event: ev, loading: false });
+              }}
             >
               {t('dashboard.cancel', 'Cancel event')}
             </Button>
