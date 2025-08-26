@@ -3,6 +3,8 @@
     "header": "Upcoming Bar-Hopping Events",
   "dont_miss": "don't miss these events!",
     "join_now": "Join Now",
+    "no_events_title": "No events registered",
+    "no_events_description": "You haven't registered for any events yet. Check out upcoming events to join!",
     "no_more_user": "No more users to swipe",
     "no_more_description": "You've reached the end! There are no more profiles to view.",
     "book_now": "Book Now",
