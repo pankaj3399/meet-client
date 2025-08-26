@@ -52,34 +52,50 @@ const EventsGrid = () => {
   return (
     <>
       <section className="rounded-2xl border border-slate-200 bg-white divide-y">
-        {events?.data?.map((ev, idx) => (
-          <div 
-            key={idx}
-            className="flex items-center justify-between p-5 gap-4 cursor-pointer hover:bg-slate-50 transition-colors"
-            onClick={() => handleCardClick(ev._id)}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-20 h-20rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-white flex flex-col items-center justify-center shadow-md">
-                <div className="text-3xl leading-none font-extrabold">{dayNumber(ev.date)}</div>
-                <div className="text-[10px] uppercase tracking-wide opacity-90">{monthYearShort(ev.date, i18n.language)}</div>
-              </div>
-              <div>
-                <div className="font-semibold text-slate-800">{ev.city?.name}</div>
-                <div className="text-sm text-slate-500">{formatDateString(ev.date)}</div>
-              </div>
-            </div>
-
-            <Button
-              className="bg-red-600 text-white hover:bg-red-700 rounded-full px-4 py-1 text-xs"
-              onClick={(e) => {
-                e.stopPropagation();
-                setCancelDialog({ open: true, event: ev, loading: false });
-              }}
+        {events?.data?.length > 0 ? (
+          events.data.map((ev, idx) => (
+            <div 
+              key={idx}
+              className="flex items-center justify-between p-5 gap-4 cursor-pointer hover:bg-slate-50 transition-colors"
+              onClick={() => handleCardClick(ev._id)}
             >
-              {t('dashboard.cancel', 'Cancel event')}
-            </Button>
+              <div className="flex items-center gap-4">
+                <div className="w-20 h-20rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-white flex flex-col items-center justify-center shadow-md">
+                  <div className="text-3xl leading-none font-extrabold">{dayNumber(ev.date)}</div>
+                  <div className="text-[10px] uppercase tracking-wide opacity-90">{monthYearShort(ev.date, i18n.language)}</div>
+                </div>
+                <div>
+                  <div className="font-semibold text-slate-800">{ev.city?.name}</div>
+                  <div className="text-sm text-slate-500">{formatDateString(ev.date)}</div>
+                </div>
+              </div>
+
+              <Button
+                className="bg-red-600 text-white hover:bg-red-700 rounded-full px-4 py-1 text-xs"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCancelDialog({ open: true, event: ev, loading: false });
+                }}
+              >
+                {t('dashboard.cancel', 'Cancel event')}
+              </Button>
+            </div>
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {t('matching_room.no_events_title', 'No events registered')}
+            </h3>
+            <p className="text-gray-500 max-w-sm">
+              {t('matching_room.no_events_description', 'You haven\'t registered for any events yet. Check out upcoming events to join!')}
+            </p>
           </div>
-        ))}
+        )}
       </section>
 
       {/* Cancel Confirmation Dialog */}
