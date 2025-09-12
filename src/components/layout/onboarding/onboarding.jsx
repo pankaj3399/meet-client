@@ -19,7 +19,7 @@ export function OnboardingLayout({ children }){
   // set the background color
   useEffect(() => {
 
-    document.body.style.backgroundColor = '#1e293b';
+    document.body.style.backgroundColor = '#FE3678';
     return () => document.body.style.backgroundColor = '';
 
   }, []);

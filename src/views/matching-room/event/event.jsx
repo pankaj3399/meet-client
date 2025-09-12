@@ -1,11 +1,15 @@
 import React, { useContext, useState } from 'react'
 import UserSwiper from './user-swiper'
-import { UserSwiperContext, useTranslation } from 'components/lib'
+import { UserSwiperContext, useTranslation, useLocation, useAPI } from 'components/lib'
 
 function Event() {
     const userSwiperContext = useContext(UserSwiperContext)
+    const location = useLocation();
     const { t } = useTranslation();
+    const parts = location.pathname.split('/');
     const [selectedImage, setSelectedImage] = useState(null)
+
+    const event = useAPI(`/api/events/${parts[2]}`);
 
     const handleImageClick = (src) => {
         setSelectedImage(src)
@@ -14,15 +18,29 @@ function Event() {
     const closeModal = () => {
         setSelectedImage(null)
     }
+
+    function formatDateString(d){
+        try {
+            const formatter = new Intl.DateTimeFormat('de-DE', {
+            timeZone: 'Europe/Berlin',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+            });
+            return formatter.format(new Date(d));
+        } catch { return ''; }
+    }
     
     return <div>
         <div className="flex gap-8 lg:gap-4 w-full flex-col lg:flex-row pb-[100px] lg:pb-0">
-            <div className="flex-[60%]">
-                <h1 className="text-2xl font-bold text-center my-6">Bar-Hopping Events</h1>
+            <div className="flex-[60%] p-4 lg:p-8 lg:my-5">
+                <h1 className="text-3xl lg:text-4xl font-light tracking-tight mb-5 mx-4 lg:mx-auto lg:max-w-[400px] text-center lg:mb-10">
+                    {t('matching_room.all_participants')} <span className="text-pink-600 font-bold">{event?.data?.city?.name}</span> {t('matching_room.from')} <span className="text-pink-600 font-bold">{event?.data?.date && formatDateString(event.data.date)}</span>
+                </h1>
                 <UserSwiper />
             </div>
             {userSwiperContext?.activeUser && (
-                <div className="lg:block lg:w-[300px] p-6 bg-white shadow-lg border-0 rounded-3xl max-w-5xl mx-auto">
+                <div className="w-full lg:block lg:w-[300px] p-6 bg-white shadow-lg border-0 rounded-3xl max-w-5xl mx-auto lg:min-h-[100vh]">
                     <div className="space-y-6">
                         {/* About Me Section */}
                         <div className="mt-8">

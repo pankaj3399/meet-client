@@ -145,5 +145,16 @@
   "topup_now": "Top up now",
   "more_events_head": "More events,",
   "more_events_sub": "you shouldn't miss",
-  "book_participation": "Book participation"
+  "book_participation": "Book participation",
+  "no_partner": "Partner will be assigned later",
+  "current_events": {
+    "title": "The Matching Room is open",
+    "subtitle": "Find your matches from the current event in",
+    "btn": "Open Matching Room"
+  },
+  "end_events": {
+    "title": "Book your next event",
+    "subtitle": "Great people are waiting for you.\nJoin the next event near you!",
+    "btn": "Show all events"
+  }
 }

@@ -98,13 +98,13 @@ export function Payment(props){
       <Card restrictWidth className={cn(props.className, "p-4 lg:p-10 !max-w-full bg-background")}> 
         <div className='flex flex-col w-full items-start max-w-[880px]'>
 
-          <section className='mt-2 w-full'>
-            <h1 className="text-3xl font-semibold mb-3">Hey <span className='text-pink-600'>{context?.user?.name}</span>, führe deine Zahlung durch</h1>
+          <section className='mt-2 w-full '>
+            <h1 className="text-3xl lg:text-[45px] font-light mb-3 lg:max-w-[500px] leading-tight">Hey <span className='text-pink-600 font-bold'>{context?.user?.name}</span>, {props.t('account.payment.pay_header')}</h1>
 
             {/* main card */}
-            <div className="mt-4 bg-white rounded-2xl border border-slate-200 p-6 lg:p-10 shadow-sm relative">
+            <div className="mt-4 lg:mt-8 bg-white rounded-2xl border border-slate-200 p-6 lg:p-10 shadow-sm relative">
               {/* step pill */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-pink-500 text-white text-xs font-semibold px-4 py-1 rounded-full shadow">Letzter Schritt</div>
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#FE3678] to-[#FE313F] text-white text-sm font-medium px-4 py-1 rounded-[14px] shadow lg:px-10 lg:py-2">{props.t('account.payment.last_step')}</div>
 
               {/* transaction summary */}
               <div className="mb-6">
@@ -187,7 +187,7 @@ export function Payment(props){
             />
 
               {/* actions row */}
-              <div className="mt-6 flex items-center justify-between">
+              <div className="mt-6 flex items-center gap-4">
                 <button className={`bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-full text-sm font-semibold ${clicked && 'opacity-50'}`} onClick={(e) => {
               e.preventDefault();
               if(!clicked){
@@ -197,7 +197,7 @@ export function Payment(props){
                 }} disabled={clicked}>
                   {props.t('account.payment.checkout.pay_now')}
                 </button>
-                <div className="text-[11px] text-gray-500">Gutschein-Code vorhanden?</div>
+                <div className="text-[11px] text-gray-500">{props.t('account.payment.ask_voucher')}</div>
               </div>
             </div>
           </section>

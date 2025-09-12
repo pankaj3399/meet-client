@@ -91,5 +91,9 @@
       "title": "Cheaper than a cup of coffee a day",
       "subtitle": "You're investing in yourself, your business, and your future. The investment is lower than the cost of a cup of coffee per day.",
       "pay_now": "Pay now"
-    }
+    },
+    "pay_header": "Complete your payment",
+    "last_step": "Final step",
+    "ask_voucher": "Do you have a voucher code?"
+
 }

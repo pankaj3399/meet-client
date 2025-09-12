@@ -145,5 +145,16 @@
   "topup_now": "Jetzt aufladen",
   "more_events_head": "Weitere Events,",
   "more_events_sub": "die du dir nicht entgehen lassen solltest",
-  "book_participation": "Teilnahme buchen"
+  "book_participation": "Teilnahme buchen",
+  "no_partner": "Partner wird noch zugewiesen",
+  "current_events": {
+    "title": "Der Matching-Room ist eröffnet",
+    "subtitle": "Finde deine Matches vom aktuellen Event in",
+    "btn": "Matching-Room öffnen"
+  },
+  "end_events": {
+    "title": "Buche dein nächstes Event",
+    "subtitle": "Tolle Menschen warten auf dich. \nSei beim nächsten Event in deiner Nähe dabei!",
+    "btn": "Alle Events anzeigen"
+  }
 }

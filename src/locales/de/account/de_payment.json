@@ -91,5 +91,8 @@
     "title": "Günstiger als ein Kaffee am Tag",
     "subtitle": "Du investierst in Dich selbst, Dein Business und Deine Zukunft. Diese Investition kostet weniger als ein Kaffee pro Tag.",
     "pay_now": "Jetzt bezahlen"
-  }
+  },
+  "pay_header": "führe deine Zahlung durch",
+  "last_step": "Letzter Schritt",
+  "ask_voucher": "Gutschein-Code vorhanden?"
 }

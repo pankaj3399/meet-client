@@ -7,13 +7,15 @@ export const UserSwiperContext = createContext();
 
 export function UserSwiperProvider(props){
   const [activeUser, setActiveUser] = useState(null)
+  const [activeEvent, setActiveEvent] = useState(null)
 
   return (
     <UserSwiperContext.Provider value={{
 
       activeUser,
-      setActiveUser: (data) => setActiveUser(data)
-
+      setActiveUser: (data) => setActiveUser(data),
+      setActiveEvent: (data) => setActiveEvent(data),
+      activeEvent
     }}
 
     {...props} />

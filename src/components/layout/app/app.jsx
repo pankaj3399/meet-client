@@ -23,12 +23,12 @@ export function AppLayout({ title, children, path }){
   const authContext = useContext(AuthContext);
 
   const nav = [
-    { label: t('nav.dashboard'), icon: 'gauge', link: '/dashboard', position: 'top' },
-    { label: t('nav.inbox'), icon: 'message-circle-more', link: '/inbox', position: 'top' },
-    { label: t('nav.matches'), icon: 'heart', link: '/matches', position: 'top' },
-    { label: t('nav.matching_room'), icon: 'door-open', link: '/matching-room', position: 'top' },
+    { label: t('nav.dashboard'), img: '/assets/icons/home.svg', link: '/dashboard', position: 'top' },
+    { label: t('nav.inbox'), img: '/assets/icons/inbox.svg', link: '/inbox', position: 'top' },
+    { label: t('nav.matches'), img: '/assets/icons/matches.svg', link: '/matches', position: 'top' },
+    { label: t('nav.matching_room'), img: '/assets/icons/matching-room.svg', link: '/matching-room', position: 'top' },
     // { label: t('nav.help'), icon: 'help-circle', link: '/help', position: 'bottom' },
-    { label: t('nav.signout'), icon: 'log-out', action: authContext.signout, position: 'bottom' }
+    // { label: t('nav.signout'), icon: 'log-out', action: authContext.signout, position: 'bottom' }
   ]
   
   return (

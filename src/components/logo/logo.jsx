@@ -15,10 +15,10 @@
 
 import { useContext } from 'react';
 import { AuthContext, Link, cn } from 'components/lib';
-import LogoWhite from '/assets/logo/logo-white.svg';
-import LogoMarkWhite from '/assets/logo/logo-mark-white.svg';
+// import LogoWhite from '/assets/logo/logo-white.svg';
+// import LogoMarkWhite from '/assets/logo/logo-mark-white.svg';
 import LogoColor from '/assets/logo/logo-color.svg';
-import LogoMarkColor from '/assets/logo/logo-mark-color.svg';
+// import LogoMarkColor from '/assets/logo/logo-mark-color.svg';
 
 export function Logo({ className, color, mark }){
 
@@ -32,11 +32,11 @@ export function Logo({ className, color, mark }){
   const Logo = {
     color: {
       logo: LogoColor,
-      mark: LogoMarkColor 
+      mark: LogoColor
     },
     white: {
-      logo: LogoWhite,
-      mark: LogoMarkWhite
+      logo: LogoColor,
+      mark: LogoColor
     }
   }
   

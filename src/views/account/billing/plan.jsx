@@ -125,8 +125,8 @@ export function BillingPlan(props) {
       {/* MODAL: BUY COINS */}
       {isOpenBuy && (
         <div className="fixed inset-0 z-[60] grid place-items-center bg-black/60 p-4">
-          <div className="w-full max-w-3xl rounded-lg bg-white p-6 shadow-xl">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+          <div className="w-full max-w-3xl rounded-[20px] bg-white p-6 shadow-xl">
+            <div className="grid grid-cols-1 gap-6 items-center">
               <div className="md:col-span-1">
                 <h3 className="text-lg font-semibold mb-1">{t('account.coins.buy_title')}</h3>
                 <p className="text-sm text-gray-600">{t('account.coins.topup_headline')}</p>
@@ -141,13 +141,13 @@ export function BillingPlan(props) {
                     key={i}
                     disabled={buying}
                     onClick={() => handleBuyCoins(p.q)}
-                    className="rounded-2xl shadow-md border border-gray-200 bg-gradient-to-b from-pink-500 to-rose-500 text-white p-0 overflow-hidden"
+                    className="rounded-2xl shadow-md border border-gray-200 bg-gradient-to-r from-pink-500 to-rose-500 text-white p-0 overflow-hidden"
                   >
                     <div className="px-8 pt-8 pb-4 text-center">
-                      <div className="text-4xl font-extrabold">{p.q}</div>
-                      <div className="text-xs mt-1">{t('account.coins.title')}</div>
+                      <div className="text-4xl lg:text-[75px] font-extrabold">{p.q}</div>
+                      <div className="text-sm mt-4">{t('account.coins.title')}</div>
                     </div>
-                    <div className="bg-black text-white text-xs py-2 text-center">{p.label}</div>
+                    <div className="bg-black text-white text-sm py-2 text-center">{p.label}</div>
                   </button>
                 ))}
               </div>

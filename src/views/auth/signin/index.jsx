@@ -57,12 +57,12 @@ export function Signin({ t }){
   return(
     <div>  
 
-      <h1>{ t('auth.signin.index.title') }</h1>
+      <h1 className='text-rose-500'>{ t('auth.signin.index.title') }</h1>
 
-      <SocialSignin network={['facebook', 'twitter']} />
-      <Separator label={ t('global.social.or') }/>
+      {/* <SocialSignin network={['facebook', 'twitter']} /> */}
+      {/* <Separator label={ t('global.social.or') }/> */}
 
-      { useMagic ?
+      {/* { useMagic ?
         <Button 
           text={ t('auth.signin.index.button.use_password') } 
           icon='shield' 
@@ -79,7 +79,7 @@ export function Signin({ t }){
           className='mx-auto mb-5'
           action={ () => { toggleMagicLink(true) }}
         />
-      }
+      } */}
 
       <Form
         inputs={ form }

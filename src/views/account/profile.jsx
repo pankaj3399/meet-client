@@ -276,7 +276,7 @@ export function Profile({ t }) {
 
       {/* ===== Account Overview Card ===== */}
       <Card className="overflow-hidden shadow-lg rounded-2xl">
-        <CardHeader className="bg-gradient-to-r from-slate-500 via-purple-500 to-pink-500 p-6">
+        <CardHeader className="bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 p-6">
           <div className="flex items-center gap-4">
             <div className="text-white">
               <CardTitle className="text-2xl font-semibold tracking-wide drop-shadow-md">

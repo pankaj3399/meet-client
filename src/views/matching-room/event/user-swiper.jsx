@@ -69,8 +69,9 @@ const Advanced = () => {
     currentIndexRef.current = last;
   }
 }, [mergedUsers]);
-
+  
   const swiped = async (direction, name, index, id) => {
+    
     const isSuperliker = superlikedUsers.find(u => u._id === id);
     
     if (isSuperliker) {
@@ -279,12 +280,23 @@ const Advanced = () => {
     }
   }
 
+  function calculateAge(dateOfBirth) {
+    const dob = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
   return (
-    <div className="w-full lg:min-h-[70vh] flex flex-col items-center justify-center">
+    <div className="w-full lg:min-h-[70vh] flex flex-col items-center justify-center mt-8 lg:mt-6">
       {
         (canSwipe && mergedUsers?.length > 0) &&
-        <div className="relative w-[240px] lg:w-[340px] h-[380px] lg:h-[520px]">
-          {mergedUsers?.map((user, index) => (
+        <div className="relative w-full lg:w-full lg:max-w-[800px] h-[420px] lg:h-[600px]">
+          {[...mergedUsers]?.map((user, index) => (
             <TinderCard
               ref={(el) => (childRefs.current[index] = el)}
               className="absolute w-full h-full"
@@ -294,32 +306,52 @@ const Advanced = () => {
             >
               <div
                 style={{ zIndex: index === currentIndex ? 100 : index }}
-                className={`relative bg-white rounded-xl w-full h-full overflow-hidden flex flex-col justify-end cursor-grab transition-all duration-300 ease-in-out
+                className={`relative bg-white rounded-xl w-full h-full overflow-hiddens flex flex-col cursor-grab transition-all duration-300 ease-in-out
                   ${user.isPendingSuperlike ? 'shadow-xl border-2 border-pink-500 ' : 'shadow-lg'}
                 `}
               >
-
-              {user.isPendingSuperlike && (
-                <div className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white text-sm font-semibold flex items-center gap-2 shadow-xl border border-white/30 backdrop-blur-sm animate-[pulseShadow_2s_infinite]">
-                  <Star className="w-4 h-4 text-yellow-300 drop-shadow-sm" />
-                  {t('matching_room.confirm_superlike.tag')}
+                {/* Background giant X and Heart */}
+                <div className="absolute inset-0 flex justify-between items-center text-[200px] font-extrabold opacity-[0.05] select-none pointer-events-none">
+                  <img
+                      src="/assets/icons/reject.svg"
+                      alt="reject"
+                      className="w-[30%] lg:w-[40%] h-auto text-pink-600 brightness-50"
+                  />
+                  <img
+                      src="/assets/icons/love.svg"
+                      alt="love"
+                      className="w-[30%]  lg:w-[40%] h-auto text-pink-600 brightness-50 lg:mr-[-10px]"
+                    />
                 </div>
-              )}
 
+                {/* Name Badge at top */}
+                <div className="bg-gradient-to-r from-pink-500 to-red-500 absolute top-[-15px] left-1/2 -translate-x-1/2 z-20 flex items-center shadow-lg rounded-[14px] overflow-hidden">
+                  {/* Left side: Name */}
+                  <div className=" text-white px-5 py-2 text-sm font-semibold">
+                    {user.first_name} {user.last_name?.charAt(0)}.
+                  </div>
+                  {/* Right side: Age */}
+                  {user.date_of_birth && (
+                    <div className="bg-white text-pink-500 px-5 py-2 text-sm font-bold ml-[-7px] rounded-l-[12px]">
+                      {calculateAge(user.date_of_birth)}
+                    </div>
+                  )}
+                </div>
 
+                {/* Superlike Tag */}
+                {user.isPendingSuperlike && (
+                  <div className="absolute top-16 left-4 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white text-sm font-semibold flex items-center gap-2 shadow-xl border border-white/30 backdrop-blur-sm animate-[pulseShadow_2s_infinite]">
+                    <Star className="w-4 h-4 text-yellow-300 drop-shadow-sm" />
+                    {t('matching_room.confirm_superlike.tag')}
+                  </div>
+                )}
+
+                {/* User Image */}
                 <img
                   src={user.avatar || mainPhoto}
                   alt={user.first_name}
-                  className="absolute top-0 left-0 w-full h-full object-cover"
+                  className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[200px] lg:w-[340px] h-[340px] lg:h-[520px] object-cover rounded-xl pointer-events-none"
                 />
-
-                {/* Gradient overlay for text */}
-                <div className="relative z-10 p-4 bg-gradient-to-t from-black/70 to-transparent text-white">
-                  <h2 className="text-xl font-extrabold tracking-wide">
-                    {user.first_name}, {user.age} ({user.gender})
-                  </h2>
-                  <p className="text-sm italic opacity-90">{user.description}</p>
-                </div>
               </div>
             </TinderCard>
           ))}
@@ -344,21 +376,36 @@ const Advanced = () => {
             </button>
           </div>
         ) : (
-          <div className="mt-4 lg:mt-6 flex justify-center gap-2 lg:gap-5">
+          <div className="mt-4 lg:mt-6s flex justify-center gap-2 lg:gap-5 lg:absolute bottom-8">
             {
               (lastDirection === 'left' && !mergedUsers[currentIndex - 1]?.isPendingSuperlike) &&
               <button onClick={handleUndo} className="bg-yellow-100 hover:bg-yellow-200 text-yellow-600 p-4 rounded-full shadow-lg">
                 <Undo2 className="w-6 h-6" />
               </button>
             }
-            <button onClick={() => swipe('left')} className="bg-red-100 hover:bg-red-200 text-red-600 p-4 rounded-full shadow-lg">
-              <X className="w-6 h-6" />
+            <button onClick={() => swipe('left')} className="bg-gradient-to-r hover:bg-red-200 from-[#000000] to-[#444444] p-4 rounded-full shadow-lg">
+              {/* <X className="w-6 h-6" /> */}
+              <img
+                src="/assets/icons/x.svg"
+                alt="x"
+                className="w-4 h-4 lg:w-6 lg:h-6"
+              />
             </button>
-            <button onClick={handleSuperlike} className="bg-blue-100 hover:bg-blue-200 text-blue-600 p-4 rounded-full shadow-lg">
-              <Star className="w-6 h-6" />
+            <button onClick={handleSuperlike} className="bg-gradient-to-br hover:bg-blue-200 from-[#4A36FE] to-[#D200A1] p-4 rounded-full shadow-lg">
+              {/* <Star className="w-6 h-6" /> */}
+              <img
+                src="/assets/icons/superlike.svg"
+                alt="superlike"
+                className="w-4 h-4 lg:w-6 lg:h-6"
+              />
             </button>
-            <button onClick={() => swipe('right')} className="bg-green-100 hover:bg-green-200 text-green-600 p-4 rounded-full shadow-lg">
-              <Heart className="w-6 h-6" />
+            <button onClick={() => swipe('right')} className="bg-gradient-to-br hover:bg-green-200 from-[#FE3678] to-[#FE313F] p-4 rounded-full shadow-lg">
+              {/* <Heart className="w-6 h-6" /> */}
+              <img
+                src="/assets/icons/heart.svg"
+                alt="heart"
+                className="w-4 h-4 lg:w-6 lg:h-6"
+              />
             </button>
           </div>
         )

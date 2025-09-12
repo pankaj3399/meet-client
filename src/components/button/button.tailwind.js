@@ -62,7 +62,7 @@ const buttonVariants = cva(
           'bg-orange-500 hover:bg-orange-500/90 dark:bg-orange-500 dark:text-white dark:hover:bg-orange-500/90',
 
         primary: 
-          'bg-primary hover:bg-primary/90 dark:bg-primary dark:text-white dark:hover:bg-primary/90'
+          'bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 hover:bg-primary/90 dark:bg-primary dark:text-white dark:hover:bg-primary/90'
       }
     },
     defaultVariants: {

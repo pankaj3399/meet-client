@@ -94,6 +94,8 @@ export function Dashboard({ t }){
 
   const nextEvent = upcomingPastEvents?.data?.upcoming?.event;
   const invitedFriends = upcomingPastEvents?.data?.upcoming?.invited_friends;
+  const currentEvent = upcomingPastEvents?.data?.current;
+  const endEvent = upcomingPastEvents?.data?.end;
 
   const daysUntil = useMemo(() => {
     if (!nextEvent?.date) return null;
@@ -210,39 +212,69 @@ export function Dashboard({ t }){
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Countdown + details card */}
-          <div className="rounded-2xl bg-white shadow-md border border-slate-200 p-6">
-            <div className="grid grid-cols-3 gap-4 items-center">
-              <div className="col-span-1 flex flex-col items-center justify-center">
-                <div className="text-5xl font-extrabold text-pink-600">{daysUntil ?? '—'}</div>
-                <div className="text-xs text-slate-500 mt-1">{t('dashboard.days_until_event', 'Days until event')}</div>
-              </div>
-              <div className="col-span-2 space-y-3">
-                <div className="flex items-center gap-3 text-sm text-slate-700">
-                  <Icon name="calendar-days" size={16} />
-                  <span>{formatDateString(nextEvent?.date)}</span>
+          {
+            nextEvent &&
+            <div className="rounded-2xl bg-white shadow-md border border-slate-200 p-6">
+              <div className="grid grid-cols-[auto_1px_1fr] gap-6 items-center h-full justify-center">
+                {/* Left side */}
+                <div className="flex flex-col items-center justify-center lg:px-8">
+                  <div className="text-6xl lg:text-[100px] font-extrabold text-pink-600">
+                    {daysUntil ?? '—'}
+                  </div>
+                  <div className="text-sm text-slate-600 mt-2 font-medium">
+                    {t('dashboard.days_until_event', 'Tage bis zum Event')}
+                  </div>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-slate-700">
-                  <Icon name="map-pin" size={16} />
-                  <span>{nextEvent?.city?.name || nextEvent?.location || '—'}</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-slate-700">
-                  <Icon name="users" size={16} />
-                  <span>{authContext?.user?.name}{invitedFriends?.length ? `, ${invitedFriends.length} ${t('dashboard.with', 'With').toLowerCase()}` : ''}</span>
+
+                {/* Divider */}
+                <div className="w-px h-full bg-slate-200" />
+
+                {/* Right side */}
+                <div className="flex flex-col gap-4 lg:gap-7 lg:px-8">
+                  <div className="flex items-center gap-3 lg:gap-4 text-sm text-slate-900">
+                    <img
+                      src="/assets/icons/calendar.svg"
+                      alt="calendar"
+                      className="w-4 h-4 lg:w-6 lg:h-6 text-pink-600"
+                    />
+                    <span className='font-medium'>{formatDateString(nextEvent?.date)}</span>
+                  </div>
+                  <div className="flex items-center gap-3 lg:gap-4 text-sm text-slate-900">
+                    <img
+                      src="/assets/icons/map.svg"
+                      alt="map"
+                      className="w-4 h-4 lg:w-6 lg:h-6 text-pink-600"
+                    />
+                    <span className='font-medium'>{nextEvent?.city?.name || nextEvent?.location || '—'}</span>
+                  </div>
+                  <div className="flex items-center gap-3 lg:gap-4 text-sm text-slate-900">
+                    <img
+                      src="/assets/icons/partner.svg"
+                      alt="partner"
+                      className="w-4 h-4 lg:w-6 lg:h-6 text-pink-600"
+                    />
+                    <span className='font-medium'>
+                      {invitedFriends?.length ? (invitedFriends?.[0]?.first_name ? `${invitedFriends?.[0]?.first_name} ${invitedFriends?.[0]?.last_name}` : invitedFriends?.[0]?.name)
+                        : t('dashboard.no_partner')}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          }
 
           {/* Wallet gradient card */}
-          <div className="rounded-2xl p-6 text-white shadow-xl relative overflow-hidden bg-gradient-to-br from-pink-500 via-rose-500 to-red-500">
+          <div className="rounded-2xl p-6 text-white shadow-[0_4px_12px_#FE367866] relative overflow-hidden bg-gradient-to-br from-pink-500 via-rose-500 to-red-500">
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
-            <div className="text-xs opacity-90">{t('dashboard.your_balance', 'Your balance')}</div>
-            <div className="mt-2 flex items-center gap-2 text-4xl font-extrabold">
-              <span>{authContext?.user?.accounts?.[0]?.virtual_currency ?? 0}</span>
-              <span>❤️</span>
-            </div>
-            <div className="mt-3 text-[12px] opacity-90 max-w-xs">
-              {t('dashboard.balance_helper', 'Löse deine Herzen gegen wertvolle Vorteile ein.')}
+            <div className="text-sm opacity-90">{t('dashboard.your_balance', 'Your balance')}</div>
+            <div className="flex gap-2 lg:gap-4 justify-between">
+              <div className="mt-2 flex items-center gap-2 text-4xl lg:text-[45px] font-extrabold">
+                <span>{authContext?.user?.accounts?.[0]?.virtual_currency ?? 0}</span>
+                <span>♥</span>
+              </div>
+              <div className="mt-3 text-[14px] opacity-90 max-w-[150px] lg:text-right">
+                {t('dashboard.balance_helper', 'Löse deine Herzen gegen wertvolle Vorteile ein.')}
+              </div>
             </div>
             <div className="mt-5">
               <button 
@@ -255,44 +287,133 @@ export function Dashboard({ t }){
           </div>
         </div>
 
-        {/* More events list */}
-        <section className="space-y-3">
-          <div>
-            <div className="text-sm text-slate-500">{t('dashboard.more_events_head', 'More events,')}</div>
-            <h2 className="text-lg font-semibold text-slate-800">{t('dashboard.more_events_sub', 'you shouldn\'t miss')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {
+            currentEvent?.map((dt, i) => {
+              return <div
+            className="col-span-1"
+            key={i}
+          >
+            <div className="relative rounded-2xl p-6 md:p-10 bg-gradient-to-r from-[#FE3678] to-red-500 text-white flex flex-col md:flex-row items-start md:items-center justify-between shadow-lg gap-4 lg:gap-8">
+              {/* Left content */}
+              <div>
+                <h2 className="text-3xl md:text-4xl font-extrabold leading-snug">
+                  {t('dashboard.current_events.title')}
+                </h2>
+                <p className="mt-3 text-white/80 text-sm md:text-base lg:mt-8">
+                  {t('dashboard.current_events.subtitle')} {dt?.city?.name || dt?.location || '—'}.
+                </p>
+              </div>
+
+              {/* Right content */}
+              <div className="flex flex-col items-center lg:items-end mt-6 md:mt-0 gap-4 w-full">
+                <img
+                  src="/assets/icons/door.svg"
+                  alt="door"
+                  className="w-[40px] h-[40px] lg:w-[68px] lg:h-[68px] text-pink-600"
+                />
+                <Button
+                  variant="outline"
+                  className="rounded-full bg-white text-black hover:bg-gray-100 transition lg:mt-8"
+                  onClick={() => navigate(`/matching-room/${dt._id}`)}
+                >
+                  {t('dashboard.current_events.btn')}
+                </Button>
+              </div>
+            </div>
+          </div>
+            })
+          }
+          
+          {
+            endEvent > 0 && <div
+            className="col-span-1"
+          >
+            <div className="relative rounded-2xl p-6 md:p-10 bg-gradient-to-r from-[#FE3678] to-red-500 text-white flex flex-col md:flex-row items-start md:items-center justify-between shadow-lg gap-4 lg:gap-8">
+              {/* Left content */}
+              <div>
+                <h2 className="text-3xl md:text-4xl font-extrabold leading-snug">
+                  {t('dashboard.end_events.title')}
+                </h2>
+                <p className="mt-3 text-white/80 text-sm md:text-base lg:mt-8 lg:max-w-[300px]">
+                  {t('dashboard.end_events.subtitle')}
+                </p>
+              </div>
+
+              {/* Right content */}
+              <div className="flex flex-col items-center lg:items-end mt-6 md:mt-0 gap-4 w-full">
+                <img
+                  src="/assets/icons/hand-wave.svg"
+                  alt="hand-wave"
+                  className="w-[40px] h-[40px] lg:w-[68px] lg:h-[68px] text-pink-600"
+                />
+                <a
+                  className="border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50 rounded-full text-black h-10 px-4 py-2 transition lg:mt-8"
+                  href="#events"
+                >
+                  {t('dashboard.end_events.btn')}
+                </a>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+
+      {/* More events list */}
+      <section>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 lg:p-8">
+          {/* Header inside card */}
+          <div className="mb-6 flex flex-col" id="events">
+            <h2 className="text-[25px] font-medium text-slate-900">
+              {t('dashboard.more_events_head', 'Weitere Events,')}
+            </h2>
+            <p className="text-[25px] font-light text-slate-600">
+              {t('dashboard.more_events_sub', 'die du dir nicht entgehen lassen solltest')}
+            </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white divide-y">
+          {/* Events list */}
+          <div className="divide-y">
             {events?.data?.map((ev, idx) => (
-              <div key={idx} className="flex items-center justify-between p-5 gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-white flex flex-col items-center justify-center shadow-md">
-                    <div className="text-3xl leading-none font-extrabold">{dayNumber(ev.date)}</div>
-                    <div className="text-[10px] uppercase tracking-wide opacity-90">{monthLabel(ev.date, 'de-DE')}</div>
+              <div key={idx} className="flex items-center justify-between py-6 gap-6 flex-col lg:flex-row">
+                {/* Left side: date + city */}
+                <div className="flex lg:items-center gap-4 lg:gap-6 w-full ">
+                  {/* Date card */}
+                  <div className="w-20 h-20 lg:w-[150px] lg:h-[150px] rounded-[20px] bg-gradient-to-br from-pink-500 to-rose-500 text-white flex flex-col items-center justify-center shadow-[0_4px_12px_#FE367866]">
+                    <div className="text-3xl lg:text-[75px] font-extrabold leading-none">
+                      {dayNumber(ev.date)}
+                    </div>
+                    <div className="text-[14px] font-medium opacity-90">
+                      {monthLabel(ev.date, 'de-DE')}
+                    </div>
                   </div>
+
+                  {/* Event info */}
                   <div>
-                    <div className="font-semibold text-slate-800">{ev.city?.name}</div>
-                    <div className="text-sm text-slate-500">{formatDateString(ev.date)}</div>
+                    <div className="font-medium text-[25px] text-slate-900">{ev.city?.name}</div>
+                    <div className="text-[25px] font-light text-slate-600">{formatDateString(ev.date)}</div>
                   </div>
                 </div>
 
-                <Button 
-                  className={ev.is_registered 
-                    ? "bg-gray-400 text-white cursor-not-allowed rounded-md px-4 py-2 text-sm" 
-                    : "bg-slate-900 text-white hover:bg-slate-800 rounded-md px-4 py-2 text-sm"
+                {/* Right side: button */}
+                <Button
+                  className={
+                    ev.is_registered
+                      ? "bg-gray-400 text-white cursor-not-allowed rounded-[14px] px-6 py-2 text-sm"
+                      : "bg-black text-white hover:bg-slate-800 rounded-[14px] px-6 py-2 text-sm"
                   }
                   onClick={() => !ev.is_registered && openModal(ev)}
                   disabled={ev.is_registered}
                 >
-                  {ev.is_registered 
-                    ? t('matching_room.already_booked', 'Already booked') 
-                    : t('dashboard.book_participation', 'Book participation')
-                  }
+                  {ev.is_registered
+                    ? t('matching_room.already_booked', 'Bereits gebucht')
+                    : t('dashboard.book_participation', 'Teilnahme buchen')}
                 </Button>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
         {/* Register Modal */}
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

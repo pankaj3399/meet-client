@@ -33,6 +33,7 @@ export function Payment(props){
   const [couponData, setCouponData] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const [pricePreview, setPricePreview] = useState(null)
 
   const [modal, setModal] = useState({
     title: props.t('auth.signup.payment.checkout.title'),
@@ -57,16 +58,10 @@ export function Payment(props){
   const buttonClick = async () => {
     setLoading(true);
     try {
-      let res = await Axios({
-  
-        method: 'POST',
-        url: '/api/account/coupon',
-        data: {
-          coupon
-        }
-  
-      });
-      setCouponData(res.data.plan?.coupon?.coupon)
+      // Validate coupon for this event transaction
+      const res = await Axios.post(`/api/event/${id}/validate-coupon`, { code: coupon, transaction: id });
+      setCouponData(res.data.data?.coupon);
+      setPricePreview(res.data.data?.price);
       setModal({
         title: props.t('auth.signup.payment.coupon.success.title'),
         subtitle: props.t('auth.signup.payment.coupon.success.subtitle'),
@@ -100,16 +95,22 @@ export function Payment(props){
       <div className="relative">
         <div className='flex flex-col w-full items-start md:h-[100vh] md:max-h-[100vh] overflow-auto'>
           <section className=' w-full'>
-            <div className='pb-4'>
+            <div className='pb-4 hidden lg:block'>
                 <Logo dark color logo className="!w-40 !mx-0 mb-4"/>
             </div>
           </section>
 
-          <section className='mt-8 md:mt-0 w-full md:p-12 bg-blue-200 md:h-[100vh] md:max-h-[100vh] overflow-auto'>
-
-            {/* Coupon Code Section */}
+          <section className='mt-8 md:mt-0 w-full p-2  md:p-12 bg-[#FE3678] rounded-[20px] md:h-[100vh] md:max-h-[100vh] overflow-auto'>
             <div className="mt-6 p-8 bg-white rounded-lg">
-              <h3 className="text-xl lg:text-2xl font-bold pb-4">{props.t('auth.signup.payment.coupon.title')}</h3>
+              <h3 className="text-lg lg:text-xxl font-semibold text-gray-600">{props.t('account.payment.transaction.title')}</h3>
+              <h3 className="text-xl lg:text-2xl font-bold mb-6 lg:mb-8">{props.t('account.payment.transaction.description_event', {
+                event: fetch?.data?.event_id?.city?.name
+              })}  {props.t('account.payment.transaction.for')} <span className="text-pink-500">€ {pricePreview?.final || fetch.data?.amount}</span></h3>
+              {pricePreview && (
+                <p className="text-sm text-gray-600">{props.t('auth.signup.payment.coupon.applied', { defaultValue: 'Coupon applied.' })} {props.t('auth.signup.payment.coupon.original', { defaultValue: 'Original:' })} € {pricePreview.original} • {props.t('auth.signup.payment.coupon.discount', { defaultValue: 'Discount:' })} € {pricePreview.discount}</p>
+              )}
+
+              <h3 className="text-lg lg:text-xl font-bold pb-4">{props.t('auth.signup.payment.coupon.title')}</h3>
               <p className="text-sm text-gray-500 font-medium">{props.t('auth.signup.payment.coupon.description')}</p>
               <div className="mt-2 flex">
                 <input
@@ -120,7 +121,7 @@ export function Payment(props){
                   disabled={redeemed}
                   readOnly={redeemed}
                 />
-                <button className="bg-black text-white px-4 py-2 rounded-r-md" onClick={(e) => {
+                 <button className="bg-black text-white px-4 py-2 rounded-r-md" onClick={(e) => {
                   e.preventDefault();
                   !loading && (redeemed ? setRedeemed(false) : buttonClick())
                 }}>
@@ -197,7 +198,7 @@ export function Payment(props){
           </div>
 
             {/* Pay Button */}
-            <button className={`mt-6 mb-28 w-full bg-black text-white py-3 rounded-md text-lg font-semibold flex items-center justify-center space-x-2 ${clicked && 'opacity-50'}`} onClick={(e) => {
+            <button className={`mt-6 mb-4 lg:mb-28 w-full bg-black text-white py-3 rounded-md text-lg font-semibold flex items-center justify-center space-x-2 ${clicked && 'opacity-50'}`} onClick={(e) => {
               e.preventDefault();
               if(!clicked){
                 setCustomBtnClick(prev => prev + 1);

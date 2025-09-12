@@ -21,8 +21,8 @@ export function SignupUser({ t }){
       
       <h1>{ t('auth.signup.user.title') }</h1>
 
-      <SocialSignin network={['facebook', 'twitter']} invite={ searchParams.get('id') } />
-      <Separator label={ t('global.social.or') }/>
+      {/* <SocialSignin network={['facebook', 'twitter']} invite={ searchParams.get('id') } /> */}
+      {/* <Separator label={ t('global.social.or') }/> */}
 
       <Form
         inputs={{

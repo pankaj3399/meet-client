@@ -171,7 +171,7 @@ export const UpcomingEventsTable = ({ events, isOnboarding }) => {
             >
                 {!isOnboarding && <h1 className="text-2xl font-bold">{t('dashboard.upcoming_events')}</h1>}
                 
-                <div className={cn("grid gap-4 lg:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:py-6", isOnboarding && 'lg:grid-cols-2')}>
+                <div className={cn("grid gap-4 lg:gap-1 grid-cols-1 lg:py-6", isOnboarding && 'lg:grid-cols-1 divide-y')}>
                     {eventData?.length > 0 ? (
                     eventData.map((event, i) => (
                         <UpcomingEventCard key={i} event={event} onClick={() => {

@@ -14,14 +14,14 @@ function MatchingRoom() {
         </h1>
 
         {/* search pill */}
-        <div className="flex items-center gap-2 mb-6">
+        {/* <div className="flex items-center gap-2 mb-6">
           <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-pink-100 text-pink-600">
             <Icon name="search" size={16} />
           </span>
           <button className="px-3 py-1 text-xs rounded-md bg-pink-100 text-pink-600 font-medium">{t('common.search', { defaultValue: 'Suchen' })}</button>
-        </div>
+        </div> */}
 
-        <div className="rounded-3xl bg-white border border-slate-200 p-2">
+        <div className="rounded-3xl bg-white border border-slate-200 p-2 mt-4 lg:mt-10">
           <EventsGrid />
         </div>
       </div>

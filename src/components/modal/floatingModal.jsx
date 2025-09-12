@@ -22,7 +22,7 @@ const FloatingModal = ({ isOpen, onClose, title, description, cancel, ok, okFn, 
         ${isOpen ? "translate-x-0 pointer-events-auto" : "translate-x-[120%] pointer-events-none"}`}
     >
       <div className="flex flex-row gap-4">
-        <div className='flex-1 flex items-center justify-center gap-4'>
+        <div className='flex-1 flex items-centers justify-center gap-4'>
           <div>
             <div
               className={`flex items-center justify-center p-2 flex-1 ${
@@ -56,33 +56,37 @@ const FloatingModal = ({ isOpen, onClose, title, description, cancel, ok, okFn, 
               </div>
             </div>
           </div>
-          <h2 className="text-lg font-bold">{modal.title}</h2>
-        </div>
-        <div className="flex gap-2 flex-col">
+          <div>
+            <h2 className="text-lg font-bold">{modal.title}</h2>
+            <div className="flex gap-2 flex-col">
+          
+              <p className="text-slate-600 text-[13px]">{modal.description}</p>
+              {!modal.info && (
+                <div className="w-full flex flex-row justify-end gap-4">
+                  <button
+                    onClick={onClose}
+                    className="mt-4 px-4 py-2 text-black bg-white rounded-lg hover:bg-gray-100 border border-slate-300"
+                  >
+                    {cancel}
+                  </button>
+                  <button
+                    onClick={okFn}
+                    className="mt-4 px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
+                  >
+                    {ok}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
           <div className="flex justify-between items-start">
             
             <button onClick={onClose} className="text-gray-500 hover:text-gray-800">
               &times;
             </button>
           </div>
-          <p className="text-slate-600 text-[13px]">{modal.description}</p>
-          {!modal.info && (
-            <div className="w-full flex flex-row justify-end gap-4">
-              <button
-                onClick={onClose}
-                className="mt-4 px-4 py-2 text-black bg-white rounded-lg hover:bg-gray-100 border border-slate-300"
-              >
-                {cancel}
-              </button>
-              <button
-                onClick={okFn}
-                className="mt-4 px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
-              >
-                {ok}
-              </button>
-            </div>
-          )}
         </div>
+        
       </div>
     </div>
 

@@ -30,7 +30,7 @@ export function AuthLayout({ children }){
         </div>
 
       </section>
-      <section className='hidden sm:flex flex-col bg-blue-400 w-1/2 p-12 pb-6 justify-between items-center'>
+      <section className='hidden sm:flex flex-col bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 w-1/2 p-12 pb-6 justify-between items-center'>
 
         { /* optional: add a cool visual here */ }
         <div className='text-white max-w-96 text-lg text-opacity-80 my-auto'>
