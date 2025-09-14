@@ -182,11 +182,16 @@ export function Payment(props){
               method='POST'
               customDisabled={() => setClicked(false)}
               callback={ res => {
-
+                console.log(res);
                 // save the plan to context, then redirect
                 // Event('selected_plan', { plan: res.data.plan });
                 // context.update({ plan: res.data.plan, subscription: res.data.subscription });
-                navigate('/dashboard');
+                if(res.data.data?.status == 'waitlist'){
+                  navigate(`/waitlist`);
+                }
+                else{
+                  navigate('/dashboard');
+                }
 
               }}
               customBtnTrigger={customBtnClick}
