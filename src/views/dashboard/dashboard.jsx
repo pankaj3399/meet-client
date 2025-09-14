@@ -62,7 +62,13 @@ export function Dashboard({ t }){
   });
 
   const [addFriend, setAddFriend] = useState(false);
-
+  const [availableAgeGroups, setAvailableAgeGroups] = useState([
+    { value: '20–30', label: '20–30' },
+    { value: '31–40', label: '31–40' },
+    { value: '41–50', label: '41–50' },
+    { value: '50+', label: '50+' },
+]);
+const [ageGroup, setAgeGroup] = useState('20–30');
   // Form options
   const genders = [
     {label: t('dashboard.genders.male'), value: 'male'}, 
@@ -157,12 +163,17 @@ export function Dashboard({ t }){
       const { data: submitted } = await axios.post("/api/events/register", {
         mainUser,
         friend,
-        id: selectedEvent._id
+        id: selectedEvent._id,
+        age_group: ageGroup 
       });
 
-      if (submitted) {
+      if (submitted.data.status == 'payment') {
         navigate(`/event/${submitted.data.id}`);
       }
+      else if(submitted.data.status == 'waitlist') {
+        navigate('/waitlist');
+      }
+      closeModal();
     } catch (err) {
       console.log(err);
       if (err.response?.data?.error) {
@@ -398,15 +409,17 @@ export function Dashboard({ t }){
                 {/* Right side: button */}
                 <Button
                   className={
-                    ev.is_registered
+                    (ev.is_registered || ev.is_waitlisted)
                       ? "bg-gray-400 text-white cursor-not-allowed rounded-[14px] px-6 py-2 text-sm"
                       : "bg-black text-white hover:bg-slate-800 rounded-[14px] px-6 py-2 text-sm"
                   }
                   onClick={() => !ev.is_registered && openModal(ev)}
-                  disabled={ev.is_registered}
+                  disabled={ev.is_registered || ev.is_waitlisted}
                 >
                   {ev.is_registered
                     ? t('matching_room.already_booked', 'Bereits gebucht')
+                    : ev.is_waitlisted
+                    ? t('matching_room.waitlisted', 'Warteliste')
                     : t('dashboard.book_participation', 'Teilnahme buchen')}
                 </Button>
               </div>
@@ -436,6 +449,9 @@ export function Dashboard({ t }){
                 lookingFor={lookingFor}
                 relationshipGoals={relationshipGoals}
                 hasChildren={hasChildren}
+                availableAgeGroups={availableAgeGroups}
+                setAgeGroup={setAgeGroup}
+                ageGroup={ageGroup}
               />
             </form>
           </DialogContent>

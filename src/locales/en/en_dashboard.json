@@ -54,6 +54,10 @@
     "both": "Both",
     "diverse": "Diverse"
   },
+  "age_group_opts":{
+    "label":"Age Group",
+    "placeholder":"Select your age group"
+  },
   "facts": {
     "1": {
         "title": "What kind of person are you looking for?",

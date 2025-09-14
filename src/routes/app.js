@@ -9,6 +9,7 @@ import MatchingRoom from 'views/matching-room/matching-room';
 import Event from 'views/matching-room/event/event';
 import { Payment } from 'views/auth/signup/payment';
 import { Payment as EventPayment } from 'views/dashboard/payment';
+import Waitlist from 'views/waitlist/waitlist';
 
 const Routes = [
   {
@@ -66,6 +67,13 @@ const Routes = [
     layout: 'app',
     permission: 'user',
     title: 'matching_room.title'
+  },
+  {
+    path: '/waitlist',
+    view: Waitlist,
+    layout: 'app',
+    permission: 'user',
+    title: 'waitlist.title'
   },
   {
     path: '/profile/:id',

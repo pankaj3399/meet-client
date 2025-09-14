@@ -54,6 +54,10 @@
     "both": "Beides",
     "diverse": "Divers"
   },
+  "age_group_opts": {
+    "label": "Altersgruppe",
+    "placeholder": "Wählen Sie Ihre Altersgruppe"
+  },
   "facts": {
     "1": {
       "title": "Nach welcher Art von Person suchst Du?",
