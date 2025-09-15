@@ -1,5 +1,7 @@
 {
     "title":"Waitlist",
     "content":"You are on the waitlist for this event as there are no available slots.",
-    "content2":"You will be notified via email when there are available slots."
+    "content2":"You will be notified via email when there are available slots.",
+    "description":"You are on the waitlist for this event as there are no available slots. You will be notified via email when there are available slots.",
+    "checking": "Checking for slot availability"
 }
