@@ -41,7 +41,7 @@
     }
   },
   "add_a_friend": "Freund hinzufügen",
-  "confirm_booking": "Buchung bestätigen",
+  "confirm_booking": "Slot prüfen und Buchung bestätigen",
   "cancel": "Abbrechen",
   "last_5": "Letzte 5 besuchte Events",
   "event": "Event",
@@ -53,6 +53,10 @@
     "female": "Weiblich",
     "both": "Beides",
     "diverse": "Divers"
+  },
+  "age_group_opts": {
+    "label": "Altersgruppe",
+    "placeholder": "Wählen Sie Ihre Altersgruppe"
   },
   "facts": {
     "1": {

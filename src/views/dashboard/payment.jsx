@@ -9,7 +9,7 @@
 **********/
 
 import { useContext, useState, useEffect } from 'react';
-import { Animate, AuthContext, Button, Image, PaymentForm, useAPI, Link, Event, useNavigate, Logo, Icon, ViewContext, FloatingModal, useLocation, Card, cn } from 'components/lib';
+import { Animate, AuthContext, Button, Image, PaymentForm, useAPI, Link, Event, useNavigate, Logo, Icon, ViewContext, FloatingModal, useLocation, Card, cn, useSearchParams } from 'components/lib';
 import Axios from 'axios';
 // import CountUp from "react-countup";
 
@@ -21,6 +21,10 @@ export function Payment(props){
   const path = location?.pathname?.split('/');
   const id = path[2];
   console.log(context?.user?.accounts?.[0]?.email);
+
+  const [searchParams] = useSearchParams();
+  const sourceParam = searchParams.get('source');
+  const [isCheckingSlot, setIsCheckingSlot] = useState(true);
   
   // state
   const [period, setPeriod] = useState('month');
@@ -55,6 +59,39 @@ export function Payment(props){
   // if (!fetch.data?.plans)
   //   return null;
 
+  useEffect(()=>{
+    if(sourceParam == 'mail'){
+      const checkSlot = async () => {
+        try {
+          const res = await Axios.get(`/api/event/payment/check-for-slot/${id}`);
+          if(res.data?.data?.status == 'waitlist'){
+              viewContext.notification({
+                title: props.t('waitlist.title'),
+                description: props.t('waitlist.description'),
+                variant: 'error'
+              })
+              navigate('/dashboard')
+          }
+          else if(res.data?.data?.status == 'paid'){
+              viewContext.notification({
+                title: props.t('register_event.already_registered'),
+                variant: 'success'
+              })
+              navigate('/dashboard')
+          }
+        } catch (error) {
+          viewContext.handleError(error);
+        } finally {
+          setIsCheckingSlot(false);
+        }
+      }
+      checkSlot();
+    }
+    else{
+      setIsCheckingSlot(false);
+    }
+  }, [sourceParam])
+
   const buttonClick = async () => {
     setLoading(true);
     try {
@@ -88,6 +125,15 @@ export function Payment(props){
       }
       setLoading(false);
     }
+  }
+
+  if (isCheckingSlot) {
+    return (
+      <div className="flex flex-col items-center justify-center" style={{ height: '100vh' }}>
+        <div className="animate-spin rounded-full h-20 w-20 border border-dashed border-t-4 border-pink-500"></div>
+        <p className="mt-4 text-gray-600">{props.t('waitlist.checking')}</p>
+      </div>
+    )
   }
   
   return (
@@ -182,14 +228,16 @@ export function Payment(props){
               method='POST'
               customDisabled={() => setClicked(false)}
               callback={ res => {
-
+                console.log(res);
                 // save the plan to context, then redirect
                 // Event('selected_plan', { plan: res.data.plan });
                 // context.update({ plan: res.data.plan, subscription: res.data.subscription });
+                
                 navigate('/dashboard');
-
+                
               }}
               customBtnTrigger={customBtnClick}
+              paymentId={id}
             />
 
           </div>

@@ -72,6 +72,13 @@ export const UpcomingEventsTable = ({ events, isOnboarding }) => {
 
     const [addFriend, setAddFriend] = useState(false)
     const [submiting, setSubmiting] = useState(false);
+    const [availableAgeGroups, setAvailableAgeGroups] = useState([
+        { value: '20–30', label: '20–30' },
+        { value: '31–40', label: '31–40' },
+        { value: '41–50', label: '41–50' },
+        { value: '50+', label: '50+' },
+    ]);
+    const [ageGroup, setAgeGroup] = useState('20–30');
 
     const openModal = (event) => {
         setSelectedEvent(event)
@@ -100,13 +107,23 @@ export const UpcomingEventsTable = ({ events, isOnboarding }) => {
         const { data: submitted } = await axios.post("/api/events/register", {
             mainUser,
             friend,
-            id: selectedEvent._id
+            id: selectedEvent._id,
+            age_group: ageGroup
         });
 
         if (submitted) {
-
+            if(submitted.data.status == 'payment'){
             // authContext?.refreshUser?.();
-            navigate(`/${isOnboarding ? 'signup' : 'event'}/${submitted.data.id}`)
+                navigate(`/${isOnboarding ? 'signup' : 'event'}/${submitted.data.id}`)
+            }
+            else if(submitted.data.status == 'waitlist'){
+                viewContext.notification({
+                    title: t('waitlist.title'),
+                    description: t('waitlist.description'),
+                    variant: 'error'
+                  })
+                  navigate('/dashboard')
+            }
         }
         } catch (err) {
              // Check if event is full
@@ -205,6 +222,9 @@ export const UpcomingEventsTable = ({ events, isOnboarding }) => {
                             lookingFor={lookingFor}
                             relationshipGoals={relationshipGoals}
                             hasChildren={hasChildren}
+                            availableAgeGroups={availableAgeGroups}
+                            setAgeGroup={setAgeGroup}
+                            ageGroup={ageGroup}
                         />
                     </form>
                 </DialogContent>

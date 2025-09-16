@@ -20,11 +20,13 @@ const DynamicBookingForm = ({
   closeModal,
   lookingFor,
   relationshipGoals,
-  hasChildren
+  hasChildren,
+  availableAgeGroups,
+  setAgeGroup,
+  ageGroup
 }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-
   const mainUserFields = [
     { label: t('dashboard.fields.user.first_name'), name: 'first_name', type: 'text', required: true, disabled: true },
     { label: t('dashboard.fields.user.last_name'), name: 'last_name', type: 'text', required: true, disabled: true },
@@ -264,6 +266,23 @@ const DynamicBookingForm = ({
           ))}
         </div>
       )}
+
+      <InputGroup label={t('dashboard.age_group_opts.label')} required>
+      <Select
+        value={ageGroup}
+        onValueChange={(val) => setAgeGroup(val)}
+        required
+      >
+        <SelectTrigger><SelectValue placeholder={t('dashboard.age_group_opts.placeholder')} /></SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {availableAgeGroups.map((g, i) => (
+              <SelectItem key={i} value={g.value}>{g.label}</SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      </InputGroup>
 
       {/* Footer Buttons */}
       <DialogFooter className="flex flex-wrap sm:flex-nowrap gap-2">
