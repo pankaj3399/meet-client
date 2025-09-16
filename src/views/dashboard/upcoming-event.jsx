@@ -118,8 +118,8 @@ export const UpcomingEventsTable = ({ events, isOnboarding }) => {
             }
             else if(submitted.data.status == 'waitlist'){
                 viewContext.notification({
-                    title: props.t('waitlist.title'),
-                    description: props.t('waitlist.description'),
+                    title: t('waitlist.title'),
+                    description: t('waitlist.description'),
                     variant: 'error'
                   })
                   navigate('/dashboard')
