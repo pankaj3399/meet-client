@@ -171,7 +171,12 @@ const [ageGroup, setAgeGroup] = useState('20–30');
         navigate(`/event/${submitted.data.id}`);
       }
       else if(submitted.data.status == 'waitlist') {
-        navigate('/waitlist');
+        viewContext.notification({
+          title: props.t('waitlist.title'),
+          description: props.t('waitlist.description'),
+          variant: 'error'
+        })
+        navigate('/dashboard')
       }
       closeModal();
     } catch (err) {

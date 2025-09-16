@@ -186,6 +186,31 @@ function Form({ inputs, url, method, submitOnChange, callback, redirect, classNa
       // generate a credit card token 
       if (data.token){
 
+        const checkSlot = async () => {
+          try {
+            const res = await Axios.get(`/api/event/payment/check-for-slot/${props.paymentId}`);
+            if(res.data?.data?.status == 'waitlist'){
+                viewContext.notification({
+                  title: t('waitlist.title'),
+                  description: t('waitlist.description'),
+                  variant: 'error'
+                })
+                navigate('/dashboard')
+                return false
+            }
+            return true
+          } catch (error) {
+            viewContext.handleError(error);
+            return false
+          }
+        }
+        const isSlotAvailable = await checkSlot();
+        console.log(isSlotAvailable, 'isSlotAvailable')
+
+        if(!isSlotAvailable){
+          return false
+        }
+
         cardElement = props.elements.getElement(CardElement);
         const { token } = await props.stripe.createToken(cardElement);
         data.token = token
@@ -845,31 +870,6 @@ function PaymentForm(props){
     if (resData.requires_payment_action){
 
       try {
-        const checkSlot = async () => {
-          try {
-            const res = await Axios.get(`/api/event/payment/check-for-slot/${props.paymentId}`);
-            if(res.data?.data?.status == 'waitlist'){
-                viewContext.notification({
-                  title: props.t('waitlist.title'),
-                  description: props.t('waitlist.description'),
-                  variant: 'error'
-                })
-                navigate('/dashboard')
-                return false
-            }
-            return true
-          } catch (error) {
-            viewContext.handleError(error);
-            return false
-          }
-        }
-        const isSlotAvailable = await checkSlot();
-
-        if(!isSlotAvailable){
-          return
-        }
-
-
         const { error } = await stripe.handleCardPayment(resData.client_secret);
         if (error) throw error;
 

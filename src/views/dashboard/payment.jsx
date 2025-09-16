@@ -72,6 +72,13 @@ export function Payment(props){
               })
               navigate('/dashboard')
           }
+          else if(res.data?.data?.status == 'paid'){
+              viewContext.notification({
+                title: props.t('register_event.already_registered'),
+                variant: 'success'
+              })
+              navigate('/dashboard')
+          }
         } catch (error) {
           viewContext.handleError(error);
         } finally {
@@ -122,8 +129,8 @@ export function Payment(props){
 
   if (isCheckingSlot) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-pink-500"></div>
+      <div className="flex flex-col items-center justify-center" style={{ height: '100vh' }}>
+        <div className="animate-spin rounded-full h-20 w-20 border border-dashed border-t-4 border-pink-500"></div>
         <p className="mt-4 text-gray-600">{props.t('waitlist.checking')}</p>
       </div>
     )

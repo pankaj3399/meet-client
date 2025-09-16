@@ -117,7 +117,12 @@ export const UpcomingEventsTable = ({ events, isOnboarding }) => {
                 navigate(`/${isOnboarding ? 'signup' : 'event'}/${submitted.data.id}`)
             }
             else if(submitted.data.status == 'waitlist'){
-                navigate('/waitlist')
+                viewContext.notification({
+                    title: props.t('waitlist.title'),
+                    description: props.t('waitlist.description'),
+                    variant: 'error'
+                  })
+                  navigate('/dashboard')
             }
         }
         } catch (err) {
