@@ -204,7 +204,7 @@ function InviteUsers({ t }){
           options: [
             { value: 'male', label: t('account.profile.profile.gender.male') },
             { value: 'female', label: t('account.profile.profile.gender.female') },
-            { value: 'diverse', label: t('account.profile.profile.gender.diverse') }
+            // { value: 'diverse', label: t('account.profile.profile.gender.diverse') }
           ],
         },
         date_of_birth: {
